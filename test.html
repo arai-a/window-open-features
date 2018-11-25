@@ -86,8 +86,8 @@ let visibilityList = [
   "toolbar",
 ];
 
-let visibilityTable = document.createElement("table");
-visibilityTable.border = 1;
+let table2 = document.createElement("table");
+table2.border = 1;
 
 for (let name of visibilityList) {
   let tr = document.createElement("tr");
@@ -113,10 +113,36 @@ for (let name of visibilityList) {
   td.appendChild(document.createTextNode(text2));
 
   tr.appendChild(td);
-  visibilityTable.appendChild(tr);
+  table2.appendChild(tr);
 }
 
-document.body.appendChild(visibilityTable);
+let posAndSizeList = [
+  "screenX",
+  "screenY",
+  "innerWidth",
+  "outerWidth",
+  "innerHeight",
+  "outerHeight",
+];
+
+for (let name of posAndSizeList) {
+  let tr = document.createElement("tr");
+
+  let th = document.createElement("td");
+  let text = "window." + name;
+  th.appendChild(document.createTextNode(text));
+
+  tr.appendChild(th);
+
+  let td = document.createElement("td");
+  let text2 = window[name];
+  td.appendChild(document.createTextNode(text2));
+
+  tr.appendChild(td);
+  table2.appendChild(tr);
+}
+
+document.body.appendChild(table2);
 
 function getFeatures() {
 var a = [];
