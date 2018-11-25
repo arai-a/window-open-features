@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<title>test</title>
+<body>
+<input onclick="openWindow()" type="button" value="open window">
+<span id="features"></span><br>
+<script>
+
+function onoff(s) {
+  return { name: s, options: ["", s, s + "=yes", s + "=no"] };
+}
+function num(s) {
+  return { name: s, options: ["", s + "=0", s + "=100", s + "=500"] };
+}
+
+let featureList = [
+onoff("location"),
+onoff("menubar"),
+onoff("resizable"),
+onoff("scrollbars"),
+onoff("status"),
+onoff("titlebar"),
+onoff("toolbar"),
+
+onoff("close"),
+onoff("minimizable"),
+onoff("personalbar"),
+
+num("left"),
+num("screenX"),
+num("top"),
+num("screenY"),
+num("width"),
+num("innerWidth"),
+num("height"),
+num("innerHeight"),
+
+onoff("background"),
+onoff("fullscreen"),
+onoff("noopener"),
+onoff("persistent"),
+
+onoff("foo"),
+];
+
+let table = document.createElement("table");
+table.border = 1;
+
+let featureSet = {};
+
+for (let item of featureList) {
+let tr = document.createElement("tr");
+let first = true;
+for (let option of item.options) {
+let td = document.createElement("td");
+let label = document.createElement("label");
+let input = document.createElement("input");
+input.type = "radio";
+input.name = item.name;
+input.value = option;
+input.addEventListener("click", function() {
+  featureSet[item.name] = option;
+   update();
+})
+if (first) {
+  input.checked = true;
+  featureSet[item.name] = option;
+  first = false;
+}
+label.appendChild(input);
+let text = document.createTextNode(option)
+label.appendChild(text);
+td.appendChild(label);
+tr.appendChild(td);
+}
+table.appendChild(tr);
+}
+document.body.appendChild(table);
+
+function getFeatures() {
+var a = [];
+for (let item of featureList) {
+  a.push(featureSet[item.name]);
+}
+return a.filter(x => x).join(",");
+}
+
+function update() {
+  document.getElementById("features").textContent = getFeatures();
+}
+
+function openWindow() {
+  window.open(window.location.href, "", getFeatures());
+}
+</script>
+</body>
+</html>

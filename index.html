@@ -1,0 +1,361 @@
+<!doctype html>
+<html>
+<meta charset="UTF-8">
+<title>window.open with features</title>
+<body>
+  <h1>window.open with features</h1>
+
+  <p>
+    This document describes how the <cod>features</cod> parameter of
+    <a href="https://html.spec.whatwg.org/#dom-open"><code>window.open</code></a>
+    interacts with where the newly created
+    <a href="https://html.spec.whatwg.org/#browsing-context">browsing context</a>
+    is opened.
+  </p>
+
+  <p>
+    This document is created based on observation (with <a href="https://arai-a.github.io/window-open-features/test.html">testcase</a>) and some code reading,
+    if you found any issue, feel free to file an issue.
+  </p>
+
+  <h2>Modify <a href="https://html.spec.whatwg.org/#window-open-steps">window open steps</a></h2>
+  <p>
+    After "step 8. Let target browsing context and new be...", insert:
+  </p>
+  <ol>
+    <li>If <var>new</var> is true, then:
+      <ol>
+        <li>Let <var>windowFeature</var> be <a href="#GetWindowFeature">GetWindowFeature</a>(<var>tokenizedFeatures</var>)</li>
+        <li>If IsPopup(<var>windowFeature</var>) is true, then:
+          <ol>
+            <li>Let the <var>target browsing context</var> be in a new popup
+              (see "Opening a new popup...").</li>
+          </ol>
+        </li>
+        <li>Else:
+          <ol>
+            <li>If IsNewWindow(<var>windowFeature</var>) is true, then:
+              <ol>
+                <li>Let the <var>target browsing context</var> be in a new tab in a new window
+                  (see "Opening a new window..." and "Opening a new tab...").</li>
+              </ol>
+            </li>
+            <li>Else:
+              <ol>
+                <li>Let the <var>target browsing context</var> be in a new tab
+                  (see "Opening a new tab...").</li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <h1>Additional algorithm</h1>
+
+  <h2>GetWindowFeature(<var>tokenizedFeatures</var>)</h2>
+  <ol>
+    <li>Let <var>windowFeature</var> be a new <a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">Record</a>.</li>
+    <li>If <var>tokenizedFeatures</var> is <a href="https://infra.spec.whatwg.org/#map-is-empty">empty</a>, then:
+      <ol>
+        <li>Set <var>windowFeature</var>.[[location]] to true.</li>
+        <li>Set <var>windowFeature</var>.[[menubar]] to true.</li>
+        <li>Set <var>windowFeature</var>.[[resizable]] to true.</li>
+        <li>Set <var>windowFeature</var>.[[scrollbars]] to true.</li>
+        <li>Set <var>windowFeature</var>.[[status]] to true.</li>
+        <li>Set <var>windowFeature</var>.[[toolbar]] to true.</li>
+        <li>Set <var>windowFeature</var>.[[width]] to false.</li>
+        <li>Set <var>windowFeature</var>.[[height]] to false.</li>
+        <li>Return <var>windowFeature</var>.</li>
+      </ol>
+    </li>
+    <li>Set <var>windowFeature</var>.[[location]] to false.</li>
+    <li>Set <var>windowFeature</var>.[[menubar]] to false.</li>
+    <li>Set <var>windowFeature</var>.[[resizable]] to GetDefaultResizableValue().</li>
+    <li>Set <var>windowFeature</var>.[[scrollbars]] to false.</li>
+    <li>Set <var>windowFeature</var>.[[status]] to false.</li>
+    <li>Set <var>windowFeature</var>.[[toolbar]] to false.</li>
+    <li>Set <var>windowFeature</var>.[[width]] to false.</li>
+    <li>Set <var>windowFeature</var>.[[height]] to false.</li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>location</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>.[[location]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>location</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>menubar</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>.[[menubar]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>menubar</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>resizable</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>.[[resizable]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>resizable</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>scrollbars</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>.[[scrollbars]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>scrollbars</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>status</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>.[[status]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>status</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>toolbar</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>.[[toolbar]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>toolbar</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>width</code>" or "<code>innerWidth</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>.[[width]] to true</li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>height</code>" or "<code>innerHeight</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>.[[height]] to true</li>
+      </ol>
+    </li>
+    <li>Return <var>windowFeature</var>.</li>
+  </ol>
+
+  <hr>
+
+  <h1>Chrome's behavior</h1>
+
+  <h2>GetDefaultResizableValue() for Chrome</h2>
+  <ol>
+    <li>Return true.</li>
+  </ol>
+
+  <h2>IsPopup(<var>windowFeature</var>) for Chrome</h2>
+  <ol>
+    <li>If <var>windowFeature</var>.[[location]] and <var>windowFeature</var>.[[toolbar]] are both false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[menubar]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[resizable]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[scrollbars]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[status]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>Return false.</li>
+  </ol>
+
+  <h2>IsNewWindow(<var>windowFeature</var>) for Chrome</h2>
+  <ol>
+    <li>Return false.</li>
+  </ol>
+
+  <h2>Opening a new popup on Chrome</h2>
+  <ol>
+    <li>Open a popup which has only title bar and location bar as UI parts.</li>
+    <li>Scrollbars are shown if necessary.</li>
+    <li>The popup is resizable.</li>
+    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
+      except position and size (step 10 in <a href="https://html.spec.whatwg.org/#window-open-steps">window open steps</a>).</li>
+  </ol>
+
+  <h2>Opening a new window on Chrome</h2>
+  <p>Not used from window.open.</p>
+
+  <h2>Opening a new tab on Chrome</h2>
+  <ol>
+    <li>If this is a popup, then:
+      <ol>
+        <li>If there's other window, then:
+          <ol>
+            <li>Open a tab in the most recent window.</li>
+          </ol>
+        </li>
+        <li>Else:
+          <ol>
+            <li>Open a tab in a newly created window.</li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li>Else:
+      <ol>
+        <li>Open a tab in this window.</li>
+      </ol>
+    </li>
+  </ol>
+
+  <hr>
+
+  <h1>Safari's behavior</h1>
+
+  <h2>GetDefaultResizableValue() for Safari</h2>
+  <ol>
+    <li>Return false.</li>
+  </ol>
+
+  <h2>IsPopup(<var>windowFeature</var>) for Safari</h2>
+  <ol>
+    <li>If <var>windowFeature</var>.[[width]] is true, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>Return false.</li>
+  </ol>
+
+  <h2>IsNewWindow(<var>windowFeature</var>) for Safari</h2>
+  <ol>
+    <li>If <var>windowFeature</var>.[[scrollbars]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[status]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[toolbar]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[height]] is true, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>Return false.</li>
+  </ol>
+
+  <h2>Opening a new popup on Safari</h2>
+  <ol>
+    <li>Open a popup which has only title bar as UI parts.</li>
+    <li>Scrollbars are shown if necessary.</li>
+    <li>The popup is resizable.</li>
+    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
+      except position and size (step 10 in <a href="https://html.spec.whatwg.org/#window-open-steps">window open steps</a>).</li>
+  </ol>
+
+  <h2>Opening a new window on Safari</h2>
+  <ol>
+    <li>Open a normal window which has all UI parts.</li>
+    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts.</li>
+  </ol>
+
+  <h2>Opening a new tab on Safari</h2>
+  <ol>
+    <li>If this is a popup, then:
+      <ol>
+        <li>If there's other window, then:
+          <ol>
+            <li>Open a tab in the most recent window.</li>
+          </ol>
+        </li>
+        <li>Else:
+          <ol>
+            <li>Open a tab in a newly created window.</li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li>Else:
+      <ol>
+        <li>Open a tab in this window.</li>
+      </ol>
+    </li>
+  </ol>
+
+  <hr>
+
+  <h1>Edge's behavior</h1>
+
+  <h2>GetDefaultResizableValue() for Edge</h2>
+  <ol>
+    <li>Return false.</li>
+  </ol>
+
+  <h2>IsPopup(<var>windowFeature</var>) for Edge</h2>
+  <ol>
+    <li>If <var>windowFeature</var>.[[location]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[menubar]] is false, then:
+      <ol>
+        1. Return true.
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[toolbar]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[resizable]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[scrollbars]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[status]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>Return false.</li>
+  </ol>
+
+  <h2>IsNewWindow(<var>windowFeature</var>) for Edge</h2>
+  <ol>
+    <li>Return false.</li>
+  </ol>
+
+  <h2>Opening a new popup on Edge</h2>
+  <ol>
+    <li>Open a popup which has only title bar and location bar as UI parts.</li>
+    <li>Scrollbars are shown if necessary.</li>
+    <li>The popup is resizable.</li>
+    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
+      except position and size (step 10 in <a href="https://html.spec.whatwg.org/#window-open-steps">window open steps</a>).</li>
+  </ol>
+
+  <h2>Opening a new window on Edge</h2>
+  <p>Not used from window.open.</p>
+
+  <h2>Opening a new tab on Edge</h2>
+  <ol>
+    <li>If this is a popup, then:
+      <ol>
+        <li>Open a tab in a newly created window.</li>
+      </ol>
+    </li>
+    <li>Else:
+      <ol>
+        <li>Open a tab in this window.</li>
+      </ol>
+    </li>
+  </ol>
+
+</body>
+</html>
