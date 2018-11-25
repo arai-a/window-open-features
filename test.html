@@ -14,33 +14,33 @@ function num(s) {
 }
 
 let featureList = [
-onoff("location"),
-onoff("menubar"),
-onoff("resizable"),
-onoff("scrollbars"),
-onoff("status"),
-onoff("titlebar"),
-onoff("toolbar"),
+  onoff("location"),
+  onoff("menubar"),
+  onoff("resizable"),
+  onoff("scrollbars"),
+  onoff("status"),
+  onoff("titlebar"),
+  onoff("toolbar"),
 
-onoff("close"),
-onoff("minimizable"),
-onoff("personalbar"),
+  onoff("close"),
+  onoff("minimizable"),
+  onoff("personalbar"),
 
-num("left"),
-num("screenX"),
-num("top"),
-num("screenY"),
-num("width"),
-num("innerWidth"),
-num("height"),
-num("innerHeight"),
+  num("left"),
+  num("screenX"),
+  num("top"),
+  num("screenY"),
+  num("width"),
+  num("innerWidth"),
+  num("height"),
+  num("innerHeight"),
 
-onoff("background"),
-onoff("fullscreen"),
-onoff("noopener"),
-onoff("persistent"),
+  onoff("background"),
+  onoff("fullscreen"),
+  onoff("noopener"),
+  onoff("persistent"),
 
-onoff("foo"),
+  onoff("foo"),
 ];
 
 let table = document.createElement("table");
@@ -49,33 +49,74 @@ table.border = 1;
 let featureSet = {};
 
 for (let item of featureList) {
-let tr = document.createElement("tr");
-let first = true;
-for (let option of item.options) {
-let td = document.createElement("td");
-let label = document.createElement("label");
-let input = document.createElement("input");
-input.type = "radio";
-input.name = item.name;
-input.value = option;
-input.addEventListener("click", function() {
-  featureSet[item.name] = option;
-   update();
-})
-if (first) {
-  input.checked = true;
-  featureSet[item.name] = option;
-  first = false;
-}
-label.appendChild(input);
-let text = document.createTextNode(option)
-label.appendChild(text);
-td.appendChild(label);
-tr.appendChild(td);
-}
-table.appendChild(tr);
+  let tr = document.createElement("tr");
+  let first = true;
+  for (let option of item.options) {
+    let td = document.createElement("td");
+    let label = document.createElement("label");
+    let input = document.createElement("input");
+    input.type = "radio";
+    input.name = item.name;
+    input.value = option;
+    input.addEventListener("click", function() {
+      featureSet[item.name] = option;
+       update();
+    });
+    if (first) {
+      input.checked = true;
+      featureSet[item.name] = option;
+      first = false;
+    }
+    label.appendChild(input);
+    let text = document.createTextNode(option);
+    label.appendChild(text);
+    td.appendChild(label);
+    tr.appendChild(td);
+  }
+  table.appendChild(tr);
 }
 document.body.appendChild(table);
+
+let visibilityList = [
+  "locationbar",
+  "menubar",
+  "personalbar",
+  "scrollbars",
+  "statusbar",
+  "toolbar",
+];
+
+let visibilityTable = document.createElement("table");
+visibilityTable.border = 1;
+
+for (let name of visibilityList) {
+  let tr = document.createElement("tr");
+
+  let th = document.createElement("td");
+  let text;
+  if (window[name]) {
+    text = "window." + name + ".visible";
+  } else {
+    text = "window." + name;
+  }
+  th.appendChild(document.createTextNode(text));
+
+  tr.appendChild(th);
+
+  let td = document.createElement("td");
+  let text2;
+  if (window[name]) {
+    text2 = window[name].visible;
+  } else {
+    text2 = "doesn't exist";
+  }
+  td.appendChild(document.createTextNode(text2));
+
+  tr.appendChild(td);
+  visibilityTable.appendChild(tr);
+}
+
+document.body.appendChild(visibilityTable);
 
 function getFeatures() {
 var a = [];
