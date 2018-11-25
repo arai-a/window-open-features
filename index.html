@@ -57,9 +57,9 @@
     </li>
   </ol>
 
-  <h1>Additional algorithm</h1>
+  <h2>Additional algorithm</h2>
 
-  <h2>GetWindowFeature(<var>tokenizedFeatures</var>)</h2>
+  <h3>GetWindowFeature(<var>tokenizedFeatures</var>)</h3>
   <ol>
     <li>Let <var>windowFeature</var> be a new <a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">Record</a>.</li>
     <li>If <var>tokenizedFeatures</var> is <a href="https://infra.spec.whatwg.org/#map-is-empty">empty</a>, then:
@@ -128,14 +128,14 @@
 
   <hr>
 
-  <h1>Chrome's behavior</h1>
+  <h2>Chrome's behavior</h2>
 
-  <h2>GetDefaultResizableValue() for Chrome</h2>
+  <h3>GetDefaultResizableValue() for Chrome</h3>
   <ol>
     <li>Return true.</li>
   </ol>
 
-  <h2>IsPopup(<var>windowFeature</var>) for Chrome</h2>
+  <h3>IsPopup(<var>windowFeature</var>) for Chrome</h3>
   <ol>
     <li>If <var>windowFeature</var>.[[location]] and <var>windowFeature</var>.[[toolbar]] are both false, then:
       <ol>
@@ -165,12 +165,12 @@
     <li>Return false.</li>
   </ol>
 
-  <h2>IsNewWindow(<var>windowFeature</var>) for Chrome</h2>
+  <h3>IsNewWindow(<var>windowFeature</var>) for Chrome</h3>
   <ol>
     <li>Return false.</li>
   </ol>
 
-  <h2>Opening a new popup on Chrome</h2>
+  <h3>Opening a new popup on Chrome</h3>
   <ol>
     <li>Open a popup which has only title bar and location bar as UI parts.</li>
     <li>Scrollbars are shown if necessary.</li>
@@ -179,10 +179,10 @@
       except position and size (step 10 in <a href="https://html.spec.whatwg.org/#window-open-steps">window open steps</a>).</li>
   </ol>
 
-  <h2>Opening a new window on Chrome</h2>
+  <h3>Opening a new window on Chrome</h3>
   <p>Not used from window.open.</p>
 
-  <h2>Opening a new tab on Chrome</h2>
+  <h3>Opening a new tab on Chrome</h3>
   <ol>
     <li>If this is a popup, then:
       <ol>
@@ -207,14 +207,14 @@
 
   <hr>
 
-  <h1>Safari's behavior</h1>
+  <h2>Safari's behavior</h2>
 
-  <h2>GetDefaultResizableValue() for Safari</h2>
+  <h3>GetDefaultResizableValue() for Safari</h3>
   <ol>
     <li>Return false.</li>
   </ol>
 
-  <h2>IsPopup(<var>windowFeature</var>) for Safari</h2>
+  <h3>IsPopup(<var>windowFeature</var>) for Safari</h3>
   <ol>
     <li>If <var>windowFeature</var>.[[width]] is true, then:
       <ol>
@@ -224,7 +224,7 @@
     <li>Return false.</li>
   </ol>
 
-  <h2>IsNewWindow(<var>windowFeature</var>) for Safari</h2>
+  <h3>IsNewWindow(<var>windowFeature</var>) for Safari</h3>
   <ol>
     <li>If <var>windowFeature</var>.[[scrollbars]] is false, then:
       <ol>
@@ -249,7 +249,7 @@
     <li>Return false.</li>
   </ol>
 
-  <h2>Opening a new popup on Safari</h2>
+  <h3>Opening a new popup on Safari</h3>
   <ol>
     <li>Open a popup which has only title bar as UI parts.</li>
     <li>Scrollbars are shown if necessary.</li>
@@ -258,13 +258,13 @@
       except position and size (step 10 in <a href="https://html.spec.whatwg.org/#window-open-steps">window open steps</a>).</li>
   </ol>
 
-  <h2>Opening a new window on Safari</h2>
+  <h3>Opening a new window on Safari</h3>
   <ol>
     <li>Open a normal window which has all UI parts.</li>
     <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts.</li>
   </ol>
 
-  <h2>Opening a new tab on Safari</h2>
+  <h3>Opening a new tab on Safari</h3>
   <ol>
     <li>If this is a popup, then:
       <ol>
@@ -289,14 +289,14 @@
 
   <hr>
 
-  <h1>Edge's behavior</h1>
+  <h2>Edge's behavior</h2>
 
-  <h2>GetDefaultResizableValue() for Edge</h2>
+  <h3>GetDefaultResizableValue() for Edge</h3>
   <ol>
     <li>Return false.</li>
   </ol>
 
-  <h2>IsPopup(<var>windowFeature</var>) for Edge</h2>
+  <h3>IsPopup(<var>windowFeature</var>) for Edge</h3>
   <ol>
     <li>If <var>windowFeature</var>.[[location]] is false, then:
       <ol>
@@ -331,12 +331,12 @@
     <li>Return false.</li>
   </ol>
 
-  <h2>IsNewWindow(<var>windowFeature</var>) for Edge</h2>
+  <h3>IsNewWindow(<var>windowFeature</var>) for Edge</h3>
   <ol>
     <li>Return false.</li>
   </ol>
 
-  <h2>Opening a new popup on Edge</h2>
+  <h3>Opening a new popup on Edge</h3>
   <ol>
     <li>Open a popup which has only title bar and location bar as UI parts.</li>
     <li>Scrollbars are shown if necessary.</li>
@@ -345,10 +345,10 @@
       except position and size (step 10 in <a href="https://html.spec.whatwg.org/#window-open-steps">window open steps</a>).</li>
   </ol>
 
-  <h2>Opening a new window on Edge</h2>
+  <h3>Opening a new window on Edge</h3>
   <p>Not used from window.open.</p>
 
-  <h2>Opening a new tab on Edge</h2>
+  <h3>Opening a new tab on Edge</h3>
   <ol>
     <li>If this is a popup, then:
       <ol>
