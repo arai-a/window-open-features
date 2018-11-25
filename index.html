@@ -7,9 +7,9 @@
 
   <p>
     This document describes how the <cod>features</cod> parameter of
-    <a href="https://html.spec.whatwg.org/#dom-open"><code>window.open</code></a>
+    <a href="https://html.spec.whatwg.org/multipage/window-object.html#dom-open"><code>window.open</code></a>
     interacts with where the newly created
-    <a href="https://html.spec.whatwg.org/#browsing-context">browsing context</a>
+    <a href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context">browsing context</a>
     is opened.
   </p>
 
@@ -23,7 +23,7 @@
     if you found any issue, feel free to file an <a href="https://github.com/arai-a/window-open-features/issues">issue</a>.
   </p>
 
-  <h2>Modify <a href="https://html.spec.whatwg.org/#window-open-steps">window open steps</a></h2>
+  <h2>Modify <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a></h2>
   <p>
     After "step 8. Let target browsing context and new be...", insert:
   </p>
@@ -85,32 +85,32 @@
     <li>Set <var>windowFeature</var>.[[height]] to false.</li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>location</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[location]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>location</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>.[[location]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>location</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>menubar</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[menubar]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>menubar</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>.[[menubar]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>menubar</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>resizable</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[resizable]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>resizable</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>.[[resizable]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>resizable</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>scrollbars</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[scrollbars]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>scrollbars</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>.[[scrollbars]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>scrollbars</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>status</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[status]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>status</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>.[[status]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>status</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>toolbar</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[toolbar]] to the result of <a href="https://html.spec.whatwg.org/#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>toolbar</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>.[[toolbar]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>toolbar</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>width</code>" or "<code>innerWidth</code>", then:
@@ -176,7 +176,7 @@
     <li>Scrollbars are shown if necessary.</li>
     <li>The popup is resizable.</li>
     <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
-      except position and size (step 10 in <a href="https://html.spec.whatwg.org/#window-open-steps">window open steps</a>).</li>
+      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
   </ol>
 
   <h3>Opening a new window on Chrome</h3>
@@ -255,7 +255,7 @@
     <li>Scrollbars are shown if necessary.</li>
     <li>The popup is resizable.</li>
     <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
-      except position and size (step 10 in <a href="https://html.spec.whatwg.org/#window-open-steps">window open steps</a>).</li>
+      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
   </ol>
 
   <h3>Opening a new window on Safari</h3>
@@ -342,7 +342,7 @@
     <li>Scrollbars are shown if necessary.</li>
     <li>The popup is resizable.</li>
     <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
-      except position and size (step 10 in <a href="https://html.spec.whatwg.org/#window-open-steps">window open steps</a>).</li>
+      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
   </ol>
 
   <h3>Opening a new window on Edge</h3>
