@@ -1,0 +1,265 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Firefox's behavior around window.open features</title>
+<link rel="stylesheet" href="https://resources.whatwg.org/spec.css">
+<link rel="stylesheet" href="https://resources.whatwg.org/standard.css">
+<link rel="stylesheet" href="https://resources.whatwg.org/standard-shared-with-dev.css">
+</head>
+<body>
+
+<h1>Firefox's behavior around <code>window.open</code> features</h1>
+
+<h3 id="basic-behavior">Basic behavior<a href="#basic-behavior" class="self-link"></a></h3>
+
+<h4 id="basic-behavior-current">Current behavior<a href="#basic-behavior-current" class="self-link"></a></h4>
+
+<ul>
+  <li>Each feature corresponds to visibility of each UI part, or position/size
+    <ul>
+      <dt><code>toolbar</code></dt>
+      <dd>
+        Show/hide the toolbar buttons except the location bar.
+      </dd>
+      <dt><code>location</code></dt>
+      <dd>
+        Show/hide the location bar.
+      </dd>
+      <dt><code>personalbar</code></dt>
+      <dd>
+        Show/hide the bookmarks toolbar.
+      </dd>
+      <dt><code>menubar</code></dt>
+      <dd>
+        Show/hide the menu bar, if the menu bar is shown inside the window.
+      </dd>
+      <dt><code>resizable</code></dt>
+      <dd>
+        Enable/disable window resize.
+      </dd>
+      <dt><code>left</code>, <code>screenX</code></dt>
+      <dd>
+        Controls the X-coord of the top left corner of the window.
+      </dd>
+      <dt><code>top</code>, <code>screenY</code></dt>
+      <dd>
+        Controls the Y-coord of the top left corner of the window.
+      </dd>
+      <dt><code>width</code>, <code>innerWidth</code></dt>
+      <dd>
+        Controls the width of the window.
+      </dd>
+      <dt><code>outerWidth</code></dt>
+      <dd>
+        Controls the outer width of the window.
+      </dd>
+      <dt><code>height</code>, <code>innerHeight</code></dt>
+      <dd>
+        Controls the height of the window.
+      </dd>
+      <dt><code>outerHeight</code></dt>
+      <dd>
+        Controls the outer height of the window.
+      </dd>
+    </ul>
+  </li>
+  <li>Each feature can be turned on/off separately</li>
+  <li>User has <a href="#dom.disable_window_open_feature">control over which feature to allow/deny</a> from web content.</li>
+  <li>With empty feature, new tab is opened
+    <ul>
+      <li>Depends on <a href="#browser.link.open_newwindow"><code>browser.link.open_newwindow</code></a> pref and <a href="#browser.link.open_newwindow.restriction"><code>browser.link.open_newwindow.restriction</code></a> pref.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="basic-behavior-proposed">Proposed behavior<a href="#basic-behavior-proposed" class="self-link"></a></h4>
+
+<p>
+  To align with Chrome, Safari, and Edge, make each boolean feature just a condition for where to open the link, from:
+</p>
+
+<ul>
+  <li>Open a new tab (or new window, or load in current tab, depending on <a href="#browser.link.open_newwindow"><code>browser.link.open_newwindow</code></a> pref)</li>
+  <li>Open a new resizable popup (only with titlebar, location, status, and buttons)</li>
+</ul>
+
+<p>
+  This change affects web content only.
+  Any <code>window.open</code> call from chrome code still has ability to separately control visibility of each UI part.
+</p>
+
+<hr>
+
+<h1 id="prefs">Related prefs<a href="#prefs" class="self-link"></a></h1>
+
+<h3 id="browser.link.open_newwindow"><code>browser.link.open_newwindow</code> (<code>int</code>)<a href="#browser.link.open_newwindow" class="self-link"></a></h3>
+
+<h4 id="browser.link.open_newwindow-current">Current behavior<a href="#browser.link.open_newwindow-current" class="self-link"></a></h4>
+
+<p>
+  Control where to open a link.
+</p>
+
+<p>Used in <a href="https://searchfox.org/mozilla-central/rev/d6f8590a91b71d64a1d0471cac38b6aadbe2a6e2/toolkit/components/windowwatcher/nsWindowWatcher.cpp#2394-2398">nsWindowWatcher::GetWindowOpenLocation</a></p>
+
+<table border="1">
+  <tr>
+    <th>Value</th><th>Meaning</th>
+  </tr>
+  <tr>
+    <td><code>1</code></td>
+    <td>
+      Open the link in the current tab.
+    </td>
+  </tr>
+  <tr>
+    <td><code>2</code></td>
+    <td>
+      Open the link in a new tab in a new window.
+    </td>
+  </tr>
+  <tr>
+    <td><code>3</code></td>
+    <td>
+      <em>(default)</em> Open the link in a new tab in the current window.
+    </td>
+  </tr>
+</table>
+
+<h4 id="browser.link.open_newwindow-proposed">Proposed behavior<a href="#browser.link.open_newwindow-proposed" class="self-link"></a></h4>
+
+<p>
+  If the <var>target browsing context</var> isn't opened in popup (IsPopup returns false), open it in the specified place.
+</p>
+
+<h3 id="browser.link.open_newwindow.restriction"><code>browser.link.open_newwindow.restriction</code> (<code>int</code>)<a href="#browser.link.open_newwindow.restriction" class="self-link"></a></h3>
+
+<h4 id="browser.link.open_newwindow.restriction-current">Current behavior<a href="#browser.link.open_newwindow.restriction-current" class="self-link"></a></h4>
+
+<p>
+  Restrict where the new window can be opened
+</p>
+
+<p>Used in <a href="https://searchfox.org/mozilla-central/rev/d6f8590a91b71d64a1d0471cac38b6aadbe2a6e2/toolkit/components/windowwatcher/nsWindowWatcher.cpp#2423-2427">nsWindowWatcher::GetWindowOpenLocation</a></p>
+
+<table border="1">
+  <tr>
+    <th>Value</th><th>Meaning</th>
+  </tr>
+  <tr>
+    <td><code>0</code></td>
+    <td>
+      No restrictions.
+    </td>
+  </tr>
+  <tr>
+    <td><code>1</code></td>
+    <td>
+      Always open the link in a new tab.
+    </td>
+  </tr>
+  <tr>
+    <td><code>2</code></td>
+    <td>
+      <em>(default)</em> Open the link in a new tab if no feature is specified.
+    </td>
+  </tr>
+</table>
+
+<h4 id="browser.link.open_newwindow.restriction-proposed">Proposed behavior<a href="#browser.link.open_newwindow.restriction-proposed" class="self-link"></a></h4>
+
+<p>
+  On web content, this is ignored.
+</p>
+
+<h3 id="browser.link.open_newwindow.disabled_in_fullscreen"><code>browser.link.open_newwindow.disabled_in_fullscreen</code> (<code>bool</code>)<a href="#browser.link.open_newwindow.disabled_in_fullscreen" class="self-link"></a></h3>
+
+<p>Used in <a href="https://searchfox.org/mozilla-central/rev/d6f8590a91b71d64a1d0471cac38b6aadbe2a6e2/toolkit/components/windowwatcher/nsWindowWatcher.cpp#2401-2408">nsWindowWatcher::GetWindowOpenLocation</a></p>
+
+<p>
+  TBD
+</p>
+
+<h3 id="dom.disable_window_open_feature"><code>dom.disable_window_open_feature.*</code>  (<code>bool</code>)<a href="#dom.disable_window_open_feature" class="self-link"></a></h3>
+
+<h4 id="dom.disable_window_open_feature-current">Current behavior<a href="#dom.disable_window_open_feature-current" class="self-link"></a></h4>
+
+<p>
+  Allow/disallow each feature.
+</p>
+
+<p>
+  Used in <a href="https://searchfox.org/mozilla-central/rev/d6f8590a91b71d64a1d0471cac38b6aadbe2a6e2/toolkit/components/windowwatcher/nsWindowWatcher.cpp#1595-1619">nsWindowWatcher::CalculateChromeFlagsHelper</a>
+</p>
+
+<p>
+Introduced by <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=107949">Bug 107949</a>
+</p>
+
+<table border="1">
+  <tr>
+    <th>Pref</th><th>Default</th><th>Has effect?</th>
+  </tr>
+  <tr>
+    <td><code>dom.disable_window_open_feature.toolbar</code></td>
+    <td>Allowed by default</td>
+    <td>Has effect</td>
+  </tr>
+  <tr>
+    <td><code>dom.disable_window_open_feature.menubar</code></td>
+    <td>Allowed by default</td>
+    <td>Has effect (not on macOS, menu is always available)</td>
+  </tr>
+  <tr>
+    <td><code>dom.disable_window_open_feature.personalbar</code></td>
+    <td>Allowed by default</td>
+    <td>Has effect</td>
+  </tr>
+  <tr>
+    <td><code>dom.disable_window_open_feature.minimizable</code></td>
+    <td>Allowed by default</td>
+    <td>Has no effect, minimize button is always available</td>
+  </tr>
+  <tr>
+    <td><code>dom.disable_window_open_feature.location</code></td>
+    <td>Disallowed by default</td>
+    <td>Has effect</td>
+  </tr>
+  <tr>
+    <td><code>dom.disable_window_open_feature.resizable</code></td>
+    <td>Disallowed by default</td>
+    <td>Has effect</td>
+  </tr>
+  <tr>
+    <td><code>dom.disable_window_open_feature.status</code></td>
+    <td>Disallowed by default</td>
+    <td>Has no effect, status panel is always available.</td>
+  </tr>
+  <tr>
+    <td><code>dom.disable_window_open_feature.titlebar</code></td>
+    <td>Disallowed for content</td>
+    <td>Has no effect, disallowed for content</td>
+  </tr>
+  <tr>
+    <td><code>dom.disable_window_open_feature.close</code></td>
+    <td>Disallowed for content</td>
+    <td>Has no effect, disallowed for content</td>
+  </tr>
+</table>
+
+<ul>
+  <li>Web content can try to controll each feature</li>
+  <li>User can allow/disallow each feature</li>
+  <li>If all feature are allowed, web content can open a non-resizable window only with title bar</li>
+  <li>If all features are disallowed, web content can open only a new tab or normal new window</li>
+</ul>
+
+<h4 id="dom.disable_window_open_feature-proposed">Proposed behavior<a href="#dom.disable_window_open_feature-proposed" class="self-link"></a></h4>
+
+<p>
+  On web content, they are ignored.
+</p>
+
+</body>
+</html>
