@@ -40,12 +40,12 @@
           <ol>
             <li>If <a href="#IsNewWindow">IsNewWindow</a>(<var>windowFeature</var>) is true, then:
               <ol>
-                <li>Let the <var>target browsing context</var> be in <a href="new-tab">a new tab</a> in <a href="new-tab">a new window</a></li>
+                <li>Let the <var>target browsing context</var> be in <a href="#new-tab">a new tab</a> in <a href="#new-window">a new window</a></li>
               </ol>
             </li>
             <li>Else:
               <ol>
-                <li>Let the <var>target browsing context</var> be in <a href="new-tab">a new tab</a></li>
+                <li>Let the <var>target browsing context</var> be in <a href="#new-tab">a new tab</a></li>
               </ol>
             </li>
           </ol>
@@ -76,7 +76,7 @@
     </li>
     <li>Set <var>windowFeature</var>.[[location]] to false.</li>
     <li>Set <var>windowFeature</var>.[[menubar]] to false.</li>
-    <li>Set <var>windowFeature</var>.[[resizable]] to GetDefaultResizableValue().</li>
+    <li>Set <var>windowFeature</var>.[[resizable]] to <a href="#GetDefaultResizableValue">GetDefaultResizableValue</a>().</li>
     <li>Set <var>windowFeature</var>.[[scrollbars]] to false.</li>
     <li>Set <var>windowFeature</var>.[[status]] to false.</li>
     <li>Set <var>windowFeature</var>.[[toolbar]] to false.</li>
