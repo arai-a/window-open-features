@@ -23,7 +23,7 @@
     if you found any issue, feel free to file an <a href="https://github.com/arai-a/window-open-features/issues">issue</a>.
   </p>
 
-  <h2>Modify <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a></h2>
+  <h2 id="window-open-steps">Modify <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a></h2>
   <p>
     After "step 8. Let target browsing context and new be...", insert:
   </p>
@@ -31,24 +31,21 @@
     <li>If <var>new</var> is true, then:
       <ol>
         <li>Let <var>windowFeature</var> be <a href="#GetWindowFeature">GetWindowFeature</a>(<var>tokenizedFeatures</var>)</li>
-        <li>If IsPopup(<var>windowFeature</var>) is true, then:
+        <li>If <a href="#IsPopup">IsPopup</a>(<var>windowFeature</var>) is true, then:
           <ol>
-            <li>Let the <var>target browsing context</var> be in a new popup
-              (see "Opening a new popup...").</li>
+            <li>Let the <var>target browsing context</var> be in <a href="#new-popup">a new popup</a></li>
           </ol>
         </li>
         <li>Else:
           <ol>
-            <li>If IsNewWindow(<var>windowFeature</var>) is true, then:
+            <li>If <a href="#IsNewWindow">IsNewWindow</a>(<var>windowFeature</var>) is true, then:
               <ol>
-                <li>Let the <var>target browsing context</var> be in a new tab in a new window
-                  (see "Opening a new window..." and "Opening a new tab...").</li>
+                <li>Let the <var>target browsing context</var> be in <a href="new-tab">a new tab</a> in <a href="new-tab">a new window</a></li>
               </ol>
             </li>
             <li>Else:
               <ol>
-                <li>Let the <var>target browsing context</var> be in a new tab
-                  (see "Opening a new tab...").</li>
+                <li>Let the <var>target browsing context</var> be in <a href="new-tab">a new tab</a></li>
               </ol>
             </li>
           </ol>
@@ -57,7 +54,9 @@
     </li>
   </ol>
 
-  <h2>Additional algorithm</h2>
+  <hr>
+
+  <h2 id="additional-algorithms">Additional algorithms</h2>
 
   <h3 id="GetWindowFeature">GetWindowFeature(<var>tokenizedFeatures</var>)</h3>
   <ol>
@@ -126,16 +125,30 @@
     <li>Return <var>windowFeature</var>.</li>
   </ol>
 
-  <hr>
+  <h2 id="GetDefaultResizableValue">GetDefaultResizableValue()</h2>
 
-  <h2>Chrome's behavior</h2>
+  <h3 id="GetDefaultResizableValue-Chrome">Chrome's behavior</h2>
 
-  <h3>GetDefaultResizableValue() for Chrome</h3>
   <ol>
     <li>Return true.</li>
   </ol>
 
-  <h3>IsPopup(<var>windowFeature</var>) for Chrome</h3>
+  <h3 id="GetDefaultResizableValue-Safari">Safari's behavior</h3>
+
+  <ol>
+    <li>Return false.</li>
+  </ol>
+
+  <h3 id="GetDefaultResizableValue-Edge">Edge's behavior</h3>
+
+  <ol>
+    <li>Return false.</li>
+  </ol>
+
+  <h2 id="IsPopup">IsPopup(<var>windowFeature</var>)</h2>
+
+  <h3 id="IsPopup-Chrome">Chrome's behavior</h2>
+
   <ol>
     <li>If <var>windowFeature</var>.[[location]] and <var>windowFeature</var>.[[toolbar]] are both false, then:
       <ol>
@@ -165,56 +178,8 @@
     <li>Return false.</li>
   </ol>
 
-  <h3>IsNewWindow(<var>windowFeature</var>) for Chrome</h3>
-  <ol>
-    <li>Return false.</li>
-  </ol>
+  <h3 id="IsPopup-Safari">Safari's behavior</h3>
 
-  <h3>Opening a new popup on Chrome</h3>
-  <ol>
-    <li>Open a popup which has only title bar and location bar as UI parts.</li>
-    <li>Scrollbars are shown if necessary.</li>
-    <li>The popup is resizable.</li>
-    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
-      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
-  </ol>
-
-  <h3>Opening a new window on Chrome</h3>
-  <p>Not used from window.open.</p>
-
-  <h3>Opening a new tab on Chrome</h3>
-  <ol>
-    <li>If this is a popup, then:
-      <ol>
-        <li>If there's other window, then:
-          <ol>
-            <li>Open a tab in the most recent window.</li>
-          </ol>
-        </li>
-        <li>Else:
-          <ol>
-            <li>Open a tab in a newly created window.</li>
-          </ol>
-        </li>
-      </ol>
-    </li>
-    <li>Else:
-      <ol>
-        <li>Open a tab in this window.</li>
-      </ol>
-    </li>
-  </ol>
-
-  <hr>
-
-  <h2>Safari's behavior</h2>
-
-  <h3>GetDefaultResizableValue() for Safari</h3>
-  <ol>
-    <li>Return false.</li>
-  </ol>
-
-  <h3>IsPopup(<var>windowFeature</var>) for Safari</h3>
   <ol>
     <li>If <var>windowFeature</var>.[[width]] is true, then:
       <ol>
@@ -224,79 +189,8 @@
     <li>Return false.</li>
   </ol>
 
-  <h3>IsNewWindow(<var>windowFeature</var>) for Safari</h3>
-  <ol>
-    <li>If <var>windowFeature</var>.[[scrollbars]] is false, then:
-      <ol>
-        <li>Return true.</li>
-      </ol>
-    </li>
-    <li>If <var>windowFeature</var>.[[status]] is false, then:
-      <ol>
-        <li>Return true.</li>
-      </ol>
-    </li>
-    <li>If <var>windowFeature</var>.[[toolbar]] is false, then:
-      <ol>
-        <li>Return true.</li>
-      </ol>
-    </li>
-    <li>If <var>windowFeature</var>.[[height]] is true, then:
-      <ol>
-        <li>Return true.</li>
-      </ol>
-    </li>
-    <li>Return false.</li>
-  </ol>
+  <h3 id="IsPopup-Edge">Edge's behavior</h3>
 
-  <h3>Opening a new popup on Safari</h3>
-  <ol>
-    <li>Open a popup which has only title bar as UI parts.</li>
-    <li>Scrollbars are shown if necessary.</li>
-    <li>The popup is resizable.</li>
-    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
-      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
-  </ol>
-
-  <h3>Opening a new window on Safari</h3>
-  <ol>
-    <li>Open a normal window which has all UI parts.</li>
-    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts.</li>
-  </ol>
-
-  <h3>Opening a new tab on Safari</h3>
-  <ol>
-    <li>If this is a popup, then:
-      <ol>
-        <li>If there's other window, then:
-          <ol>
-            <li>Open a tab in the most recent window.</li>
-          </ol>
-        </li>
-        <li>Else:
-          <ol>
-            <li>Open a tab in a newly created window.</li>
-          </ol>
-        </li>
-      </ol>
-    </li>
-    <li>Else:
-      <ol>
-        <li>Open a tab in this window.</li>
-      </ol>
-    </li>
-  </ol>
-
-  <hr>
-
-  <h2>Edge's behavior</h2>
-
-  <h3>GetDefaultResizableValue() for Edge</h3>
-  <ol>
-    <li>Return false.</li>
-  </ol>
-
-  <h3>IsPopup(<var>windowFeature</var>) for Edge</h3>
   <ol>
     <li>If <var>windowFeature</var>.[[location]] is false, then:
       <ol>
@@ -331,12 +225,50 @@
     <li>Return false.</li>
   </ol>
 
-  <h3>IsNewWindow(<var>windowFeature</var>) for Edge</h3>
+  <h2 id="IsNewWindow">IsNewWindow(<var>windowFeature</var>)</h2>
+
+  <h3 id="IsNewWindow-Chrome">Chrome's behavior</h2>
+
   <ol>
     <li>Return false.</li>
   </ol>
 
-  <h3>Opening a new popup on Edge</h3>
+  <h3 id="IsNewWindow-Safari">Safari's behavior</h3>
+
+  <ol>
+    <li>If <var>windowFeature</var>.[[scrollbars]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[status]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[toolbar]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[height]] is true, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>Return false.</li>
+  </ol>
+
+  <h3 id="IsNewWindow-Edge">Edge's behavior</h3>
+
+  <ol>
+    <li>Return false.</li>
+  </ol>
+
+  <h2 id="new-popup">Opening a new popup</h2>
+
+  <h3 id="new-popup-Chrome">Chrome's behavior</h2>
+
   <ol>
     <li>Open a popup which has only title bar and location bar as UI parts.</li>
     <li>Scrollbars are shown if necessary.</li>
@@ -345,10 +277,95 @@
       except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
   </ol>
 
-  <h3>Opening a new window on Edge</h3>
+  <h3 id="new-popup-Safari">Safari's behavior</h3>
+
+  <ol>
+    <li>Open a popup which has only title bar as UI parts.</li>
+    <li>Scrollbars are shown if necessary.</li>
+    <li>The popup is resizable.</li>
+    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
+      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
+  </ol>
+
+  <h3 id="new-popup-Edge">Edge's behavior</h3>
+
+  <ol>
+    <li>Open a popup which has only title bar and location bar as UI parts.</li>
+    <li>Scrollbars are shown if necessary.</li>
+    <li>The popup is resizable.</li>
+    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
+      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
+  </ol>
+
+  <h2 id="new-window">Opening a new window</h2>
+
+  <h3 id="new-window-Chrome">Chrome's behavior</h2>
+
   <p>Not used from window.open.</p>
 
-  <h3>Opening a new tab on Edge</h3>
+  <h3 id="new-window-Safari">Safari's behavior</h3>
+
+  <ol>
+    <li>Open a normal window which has all UI parts.</li>
+    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts.</li>
+  </ol>
+
+  <h3 id="new-window-Edge">Edge's behavior</h3>
+
+  <p>Not used from window.open.</p>
+
+  <h2 id="new-tab">Opening a new tab</h2>
+
+  <h3 id="new-tab-Chromel">Chrome's behavior</h2>
+
+  <ol>
+    <li>If this is a popup, then:
+      <ol>
+        <li>If there's other window, then:
+          <ol>
+            <li>Open a tab in the most recent window.</li>
+          </ol>
+        </li>
+        <li>Else:
+          <ol>
+            <li>Open a tab in a newly created window.</li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li>Else:
+      <ol>
+        <li>Open a tab in this window.</li>
+      </ol>
+    </li>
+  </ol>
+
+  <h3 id="new-tab-Safari">Safari's behavior</h3>
+
+  <ol>
+    <li>If this is a popup, then:
+      <ol>
+        <li>If there's other window, then:
+          <ol>
+            <li>Open a tab in the most recent window.</li>
+          </ol>
+        </li>
+        <li>Else:
+          <ol>
+            <li>Open a tab in a newly created window.</li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li>Else:
+      <ol>
+        <li>Open a tab in this window.</li>
+      </ol>
+    </li>
+  </ol>
+
+  <h3 id="new-tab-Edge">Edge's behavior</h3>
+
   <ol>
     <li>If this is a popup, then:
       <ol>
