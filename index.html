@@ -137,7 +137,7 @@
 
   <h3 id="GetDefaultResizableValue">GetDefaultResizableValue()<a href="#GetDefaultResizableValue" class="self-link"></a></h3>
 
-  <h4 id="GetDefaultResizableValue-Chrome">Chrome's behavior<a href="#GetDefaultResizableValue-Chrome" class="self-link"></a></h3>
+  <h4 id="GetDefaultResizableValue-Chrome">Chrome's behavior / new Edge's behavior<a href="#GetDefaultResizableValue-Chrome" class="self-link"></a></h3>
 
   <ol>
     <li>Return true.</li>
@@ -149,7 +149,7 @@
     <li>Return false (this is not used).</li>
   </ol>
 
-  <h4 id="GetDefaultResizableValue-Edge">Edge's behavior<a href="#GetDefaultResizableValue-Edge" class="self-link"></a></h4>
+  <h4 id="GetDefaultResizableValue-Edge">old Edge's behavior<a href="#GetDefaultResizableValue-Edge" class="self-link"></a></h4>
 
   <ol>
     <li>Return false.</li>
@@ -165,7 +165,7 @@
 
   <h3 id="IsPopup">IsPopup(<var>windowFeature</var>)<a href="#IsPopup" class="self-link"></a></h3>
 
-  <h4 id="IsPopup-Chrome">Chrome's behavior<a href="#IsPopup-Chrome" class="self-link"></a></h3>
+  <h4 id="IsPopup-Chrome">Chrome's behavior / new Edge's behavior<a href="#IsPopup-Chrome" class="self-link"></a></h3>
 
   <ol>
     <li>If <var>windowFeature</var>.[[location]] and <var>windowFeature</var>.[[toolbar]] are both false, then:
@@ -207,7 +207,7 @@
     <li>Return false.</li>
   </ol>
 
-  <h4 id="IsPopup-Edge">Edge's behavior<a href="#IsPopup-Edge" class="self-link"></a></h4>
+  <h4 id="IsPopup-Edge">old Edge's behavior<a href="#IsPopup-Edge" class="self-link"></a></h4>
 
   <ol>
     <li>If <var>windowFeature</var>.[[location]] is false, then:
@@ -217,7 +217,7 @@
     </li>
     <li>If <var>windowFeature</var>.[[menubar]] is false, then:
       <ol>
-        1. Return true.
+        <li>Return true.</li>
       </ol>
     </li>
     <li>If <var>windowFeature</var>.[[toolbar]] is false, then:
@@ -249,7 +249,7 @@
 
   <h3 id="IsNewWindow">IsNewWindow(<var>windowFeature</var>)<a href="#IsNewWindow" class="self-link"></a></h3>
 
-  <h4 id="IsNewWindow-Chrome">Chrome's behavior<a href="#IsNewWindow-Chrome" class="self-link"></a></h3>
+  <h4 id="IsNewWindow-Chrome">Chrome's behavior / new Edge's behavior<a href="#IsNewWindow-Chrome" class="self-link"></a></h3>
 
   <ol>
     <li>Return false.</li>
@@ -281,7 +281,7 @@
     <li>Return false.</li>
   </ol>
 
-  <h4 id="IsNewWindow-Edge">Edge's behavior<a href="#IsNewWindow-Edge" class="self-link"></a></h4>
+  <h4 id="IsNewWindow-Edge">old Edge's behavior<a href="#IsNewWindow-Edge" class="self-link"></a></h4>
 
   <ol>
     <li>Return false.</li>
@@ -304,7 +304,7 @@
 
   <h3 id="IsNewTab">IsNewTab(<var>windowFeature</var>)<a href="#IsNewTab" class="self-link"></a></h3>
 
-  <h4 id="IsNewTab-Chrome">Chrome's behavior<a href="#IsNewTab-Chrome" class="self-link"></a></h3>
+  <h4 id="IsNewTab-Chrome">Chrome's behavior / new Edge's behavior<a href="#IsNewTab-Chrome" class="self-link"></a></h3>
 
   <ol>
     <li>Return true.</li>
@@ -316,7 +316,7 @@
     <li>Return true.</li>
   </ol>
 
-  <h4 id="IsNewTab-Edge">Edge's behavior<a href="#IsNewTab-Edge" class="self-link"></a></h4>
+  <h4 id="IsNewTab-Edge">old Edge's behavior<a href="#IsNewTab-Edge" class="self-link"></a></h4>
 
   <ol>
     <li>Return true.</li>
@@ -338,7 +338,7 @@
   </ol>
   <h3 id="new-popup">Opening a new popup<a href="#new-popup" class="self-link"></a></h3>
 
-  <h4 id="new-popup-Chrome">Chrome's behavior<a href="#new-popup-Chrome" class="self-link"></a></h3>
+  <h4 id="new-popup-Chrome">Chrome's behavior / new Edge's behavior<a href="#new-popup-Chrome" class="self-link"></a></h3>
 
   <ol>
     <li>Open a popup which has only title bar and location bar as UI parts.</li>
@@ -358,7 +358,7 @@
       except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
   </ol>
 
-  <h4 id="new-popup-Edge">Edge's behavior<a href="#new-popup-Edge" class="self-link"></a></h4>
+  <h4 id="new-popup-Edge">old Edge's behavior<a href="#new-popup-Edge" class="self-link"></a></h4>
 
   <ol>
     <li>Open a popup which has only title bar and location bar as UI parts.</li>
@@ -380,7 +380,7 @@
 
   <h3 id="new-window">Opening a new window<a href="#new-window" class="self-link"></a></h3>
 
-  <h4 id="new-window-Chrome">Chrome's behavior<a href="#new-window-Chrome" class="self-link"></a></h3>
+  <h4 id="new-window-Chrome">Chrome's behavior / new Edge's behavior<a href="#new-window-Chrome" class="self-link"></a></h3>
 
   <p>Not used from <code>window.open</code>.</p>
 
@@ -391,7 +391,7 @@
     <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts.</li>
   </ol>
 
-  <h4 id="new-window-Edge">Edge's behavior<a href="#new-window-Edge" class="self-link"></a></h4>
+  <h4 id="new-window-Edge">old Edge's behavior<a href="#new-window-Edge" class="self-link"></a></h4>
 
   <p>Not used from <code>window.open</code>.</p>
 
@@ -404,7 +404,7 @@
 
   <h3 id="new-tab">Opening a new tab<a href="#new-tab" class="self-link"></a></h3>
 
-  <h4 id="new-tab-Chrome">Chrome's behavior<a href="#new-tab-Chrome" class="self-link"></a></h3>
+  <h4 id="new-tab-Chrome">Chrome's behavior / new Edge's behavior<a href="#new-tab-Chrome" class="self-link"></a></h3>
 
   <ol>
     <li>If this is a popup, then:
@@ -452,7 +452,7 @@
     </li>
   </ol>
 
-  <h4 id="new-tab-Edge">Edge's behavior<a href="#new-tab-Edge" class="self-link"></a></h4>
+  <h4 id="new-tab-Edge">old Edge's behavior<a href="#new-tab-Edge" class="self-link"></a></h4>
 
   <ol>
     <li>If this is a popup, then:
@@ -493,15 +493,14 @@
 
   <h3 id="current-tab">Opening in the curren tab<a href="#current-tab" class="self-link"></a></h3>
 
-  <h4 id="current-tab-Chrome">Chrome's behavior<a href="#current-tab-Chrome" class="self-link"></a></h3>
-
+  <h4 id="current-tab-Chrome">Chrome's behavior / new Edge's behavior<a href="#current-tab-Chrome" class="self-link"></a></h3>
   <p>Not used from <code>window.open</code>.</p>
 
   <h4 id="new-tab-Safari">Safari's behavior<a href="#new-tab-Safari" class="self-link"></a></h4>
 
   <p>Not used from <code>window.open</code>.</p>
 
-  <h4 id="new-tab-Edge">Edge's behavior<a href="#new-tab-Edge" class="self-link"></a></h4>
+  <h4 id="new-tab-Edge">old Edge's behavior<a href="#new-tab-Edge" class="self-link"></a></h4>
 
   <p>Not used from <code>window.open</code>.</p>
 
