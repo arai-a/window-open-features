@@ -79,6 +79,8 @@
         <li>Set <var>windowFeature</var>.[[scrollbars]] to true.</li>
         <li>Set <var>windowFeature</var>.[[status]] to true.</li>
         <li>Set <var>windowFeature</var>.[[toolbar]] to true.</li>
+        <li>Set <var>windowFeature</var>.[[left]] to false.</li>
+        <li>Set <var>windowFeature</var>.[[top]] to false.</li>
         <li>Set <var>windowFeature</var>.[[width]] to false.</li>
         <li>Set <var>windowFeature</var>.[[height]] to false.</li>
         <li>Return <var>windowFeature</var>.</li>
@@ -90,6 +92,8 @@
     <li>Set <var>windowFeature</var>.[[scrollbars]] to false.</li>
     <li>Set <var>windowFeature</var>.[[status]] to false.</li>
     <li>Set <var>windowFeature</var>.[[toolbar]] to false.</li>
+    <li>Set <var>windowFeature</var>.[[left]] to false.</li>
+    <li>Set <var>windowFeature</var>.[[top]] to false.</li>
     <li>Set <var>windowFeature</var>.[[width]] to false.</li>
     <li>Set <var>windowFeature</var>.[[height]] to false.</li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>location</code>", then:
@@ -120,6 +124,16 @@
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>toolbar</code>", then:
       <ol>
         <li>Set <var>windowFeature</var>.[[toolbar]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>toolbar</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>left</code>" or "<code>screenX</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>.[[left]] to true</li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>top</code>" or "<code>screenY</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>.[[top]] to true</li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>width</code>" or "<code>innerWidth</code>", then:
@@ -245,7 +259,54 @@
 
   <h4 id="IsPopup-Firefox">Proposed Firefox's behavior<a href="#IsPopup-Firefox" class="self-link"></a></h4>
 
-  <p>TBD</p>
+  <ol>
+    <li>If <var>windowFeature</var>.[[location]] and <var>windowFeature</var>.[[toolbar]] are both false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[menubar]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[resizable]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[scrollbars]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[status]] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[left]] is true, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[top]] is true, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[width]] is true, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>.[[height]] is true, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>Return false.</li>
+  </ol>
 
   <h3 id="IsNewWindow">IsNewWindow(<var>windowFeature</var>)<a href="#IsNewWindow" class="self-link"></a></h3>
 
