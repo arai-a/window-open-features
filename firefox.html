@@ -76,7 +76,7 @@
 <h4 id="basic-behavior-proposed">Proposed behavior<a href="#basic-behavior-proposed" class="self-link"></a></h4>
 
 <p>
-  To align with Chrome, Safari, and Edge, make each boolean feature just a condition for where to open the link, from:
+  To align with Chrome, Safari, and new Edge, make each boolean feature just a condition for where to open the link, from:
 </p>
 
 <ul>
@@ -170,15 +170,34 @@
 <h4 id="browser.link.open_newwindow.restriction-proposed">Proposed behavior<a href="#browser.link.open_newwindow.restriction-proposed" class="self-link"></a></h4>
 
 <p>
-  On web content, this is ignored.
+  Keep the same behavior.
 </p>
 
 <h3 id="browser.link.open_newwindow.disabled_in_fullscreen"><code>browser.link.open_newwindow.disabled_in_fullscreen</code> (<code>bool</code>)<a href="#browser.link.open_newwindow.disabled_in_fullscreen" class="self-link"></a></h3>
 
 <p>Used in <a href="https://searchfox.org/mozilla-central/rev/d6f8590a91b71d64a1d0471cac38b6aadbe2a6e2/toolkit/components/windowwatcher/nsWindowWatcher.cpp#2401-2408">nsWindowWatcher::GetWindowOpenLocation</a></p>
 
+<h4 id="browser.link.open_newwindow.disabled_in_fullscreen-current">Current behavior<a href="#browser.link.open_newwindow.disabled_in_fullscreen-current" class="self-link"></a></h4>
+
+<ol>
+  <li>If the current window is in fullscreen, then:
+    <ol>
+      <li>If <code>browser.link.open_newwindow</code> is 2 (new window), then:
+        <ol>
+          <li>Override the pref value with 1 (current tab)</li>
+        </ol>
+      </li>
+    </ol>
+    <ol>
+      <li>Override <code>browser.link.open_newwindow.restriction</code> value with 0 (No restrictions)</li>
+    </ol>
+  </li>
+</ol>
+
+<h4 id="browser.link.open_newwindow.disabled_in_fullscreen-proposed">Proposed behavior<a href="#browser.link.open_newwindow.disabled_in_fullscreen-proposed" class="self-link"></a></h4>
+
 <p>
-  TBD
+  Keep the same behavior.
 </p>
 
 <h3 id="dom.disable_window_open_feature"><code>dom.disable_window_open_feature.*</code>  (<code>bool</code>)<a href="#dom.disable_window_open_feature" class="self-link"></a></h3>
@@ -258,7 +277,7 @@ Introduced by <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=107949">Bug 
 <h4 id="dom.disable_window_open_feature-proposed">Proposed behavior<a href="#dom.disable_window_open_feature-proposed" class="self-link"></a></h4>
 
 <p>
-  On web content, they are ignored.
+  They are ignored.
 </p>
 
 </body>
