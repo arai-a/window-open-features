@@ -36,26 +36,44 @@
     <li>If <var>new</var> is true, then:
       <ol>
         <li>Let <var>windowFeature</var> be <a href="#GetWindowFeature">GetWindowFeature</a>(<var>tokenizedFeatures</var>)</li>
-        <li>If <a href="#IsPopup">IsPopup</a>(<var>windowFeature</var>) is true, then:
+        <li>If <strong>browser-dependent</strong> <a href="#IsPopup">IsPopup</a>(<var>windowFeature</var>) is true, then:
           <ol>
             <li>Let the <var>target browsing context</var> be in <a href="#new-popup">a new popup</a></li>
           </ol>
         </li>
         <li>Else:
           <ol>
-            <li>If <a href="#IsNewWindow">IsNewWindow</a>(<var>windowFeature</var>) is true, then:
+            <li>If <strong>browser-dependent</strong> <a href="#IsNewWindow">IsNewWindow</a>(<var>windowFeature</var>) is true, then:
               <ol>
-                <li>Let the <var>target browsing context</var> be in <a href="#new-tab">a new tab</a> in <a href="#new-window">a new window</a></li>
+                <li>Let the <var>target browsing context</var> be in a new tab in <a href="#new-window">a new window</a></li>
               </ol>
             </li>
-            <li>Else if <a href="#IsNewTab">IsNewTab</a>(<var>windowFeature</var>) is true, then:
+            <li>Else if <strong>browser-dependent</strong> <a href="#IsNewTab">IsNewTab</a>(<var>windowFeature</var>) is true, then:
               <ol>
-                <li>Let the <var>target browsing context</var> be in <a href="#new-tab">a new tab</a></li>
+                <li>If the current window is a popup, then:
+                  <ol>
+                    <li>If <strong>browser-dependent</strong> <a href="#UseMostRecentWindow">UseMostRecentWindow()</a> is true, then:
+                      <ol>
+                        <li>Let the <var>target browsing context</var> be in a new tab in the most recent window.</li>
+                      </ol>
+                    </li>
+                    <li>Else:
+                      <ol>
+                        <li>Let the <var>target browsing context</var> be in a new tab in <a href="#new-window">a new window</a>.</li>
+                      </ol>
+                    </li>
+                  </ol>
+                </li>
+                <li>Else:
+                  <ol>
+                    <li>Let the <var>target browsing context</var> be in a new tab in the current window.</li>
+                  </ol>
+                </li>
               </ol>
             </li>
             <li>Else:
               <ol>
-                <li>Let the <var>target browsing context</var> be in <a href="#current-tab">the current tab</a></li>
+                <li>Let the <var>target browsing context</var> be in the current tab</li>
               </ol>
             </li>
           </ol>
@@ -79,8 +97,6 @@
         <li>Set <var>windowFeature</var>.[[scrollbars]] to true.</li>
         <li>Set <var>windowFeature</var>.[[status]] to true.</li>
         <li>Set <var>windowFeature</var>.[[toolbar]] to true.</li>
-        <li>Set <var>windowFeature</var>.[[left]] to false.</li>
-        <li>Set <var>windowFeature</var>.[[top]] to false.</li>
         <li>Set <var>windowFeature</var>.[[width]] to false.</li>
         <li>Set <var>windowFeature</var>.[[height]] to false.</li>
         <li>Return <var>windowFeature</var>.</li>
@@ -88,12 +104,10 @@
     </li>
     <li>Set <var>windowFeature</var>.[[location]] to false.</li>
     <li>Set <var>windowFeature</var>.[[menubar]] to false.</li>
-    <li>Set <var>windowFeature</var>.[[resizable]] to <a href="#GetDefaultResizableValue">GetDefaultResizableValue</a>().</li>
+    <li>Set <var>windowFeature</var>.[[resizable]] to true.</li>
     <li>Set <var>windowFeature</var>.[[scrollbars]] to false.</li>
     <li>Set <var>windowFeature</var>.[[status]] to false.</li>
     <li>Set <var>windowFeature</var>.[[toolbar]] to false.</li>
-    <li>Set <var>windowFeature</var>.[[left]] to false.</li>
-    <li>Set <var>windowFeature</var>.[[top]] to false.</li>
     <li>Set <var>windowFeature</var>.[[width]] to false.</li>
     <li>Set <var>windowFeature</var>.[[height]] to false.</li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>location</code>", then:
@@ -126,16 +140,6 @@
         <li>Set <var>windowFeature</var>.[[toolbar]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>toolbar</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
-    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>left</code>" or "<code>screenX</code>", then:
-      <ol>
-        <li>Set <var>windowFeature</var>.[[left]] to true</li>
-      </ol>
-    </li>
-    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>top</code>" or "<code>screenY</code>", then:
-      <ol>
-        <li>Set <var>windowFeature</var>.[[top]] to true</li>
-      </ol>
-    </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>width</code>" or "<code>innerWidth</code>", then:
       <ol>
         <li>Set <var>windowFeature</var>.[[width]] to true</li>
@@ -149,35 +153,7 @@
     <li>Return <var>windowFeature</var>.</li>
   </ol>
 
-  <h3 id="GetDefaultResizableValue">GetDefaultResizableValue()<a href="#GetDefaultResizableValue" class="self-link"></a></h3>
-
-  <h4 id="GetDefaultResizableValue-Chrome">Chrome's behavior / new Edge's behavior<a href="#GetDefaultResizableValue-Chrome" class="self-link"></a></h3>
-
-  <ol>
-    <li>Return true.</li>
-  </ol>
-
-  <h4 id="GetDefaultResizableValue-Safari">Safari's behavior<a href="#GetDefaultResizableValue-Safari" class="self-link"></a></h4>
-
-  <ol>
-    <li>Return false (this is not used).</li>
-  </ol>
-
-  <h4 id="GetDefaultResizableValue-Edge">old Edge's behavior<a href="#GetDefaultResizableValue-Edge" class="self-link"></a></h4>
-
-  <ol>
-    <li>Return false.</li>
-  </ol>
-
-  <h4 id="GetDefaultResizableValue-Firefox">Proposed Firefox's behavior<a href="#GetDefaultResizableValue-Firefox" class="self-link"></a></h4>
-
-  <p></p>
-
-  <ol>
-    <li>Return true.</li>
-  </ol>
-
-  <h3 id="IsPopup">IsPopup(<var>windowFeature</var>)<a href="#IsPopup" class="self-link"></a></h3>
+  <h3 id="IsPopup">browser-dependent IsPopup(<var>windowFeature</var>)<a href="#IsPopup" class="self-link"></a></h3>
 
   <h4 id="IsPopup-Chrome">Chrome's behavior / new Edge's behavior<a href="#IsPopup-Chrome" class="self-link"></a></h3>
 
@@ -285,22 +261,7 @@
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[left]] is true, then:
-      <ol>
-        <li>Return true.</li>
-      </ol>
-    </li>
-    <li>If <var>windowFeature</var>.[[top]] is true, then:
-      <ol>
-        <li>Return true.</li>
-      </ol>
-    </li>
     <li>If <var>windowFeature</var>.[[width]] is true, then:
-      <ol>
-        <li>Return true.</li>
-      </ol>
-    </li>
-    <li>If <var>windowFeature</var>.[[height]] is true, then:
       <ol>
         <li>Return true.</li>
       </ol>
@@ -308,7 +269,7 @@
     <li>Return false.</li>
   </ol>
 
-  <h3 id="IsNewWindow">IsNewWindow(<var>windowFeature</var>)<a href="#IsNewWindow" class="self-link"></a></h3>
+  <h3 id="IsNewWindow">browser-dependent IsNewWindow(<var>windowFeature</var>)<a href="#IsNewWindow" class="self-link"></a></h3>
 
   <h4 id="IsNewWindow-Chrome">Chrome's behavior / new Edge's behavior<a href="#IsNewWindow-Chrome" class="self-link"></a></h3>
 
@@ -363,7 +324,7 @@
     </li>
   </ol>
 
-  <h3 id="IsNewTab">IsNewTab(<var>windowFeature</var>)<a href="#IsNewTab" class="self-link"></a></h3>
+  <h3 id="IsNewTab">browser-dependent IsNewTab(<var>windowFeature</var>)<a href="#IsNewTab" class="self-link"></a></h3>
 
   <h4 id="IsNewTab-Chrome">Chrome's behavior / new Edge's behavior<a href="#IsNewTab-Chrome" class="self-link"></a></h3>
 
@@ -399,177 +360,109 @@
   </ol>
   <h3 id="new-popup">Opening a new popup<a href="#new-popup" class="self-link"></a></h3>
 
-  <h4 id="new-popup-Chrome">Chrome's behavior / new Edge's behavior<a href="#new-popup-Chrome" class="self-link"></a></h3>
-
   <ol>
-    <li>Open a popup which has only title bar and location bar as UI parts.</li>
+    <li>Open a popup which with <a href="#popup-style"><strong>browser-dependent</strong> popup style</a>.</li>
     <li>Scrollbars are shown if necessary.</li>
     <li>The popup is resizable.</li>
-    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
-      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
+    <p class="note">
+      <var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts.
+      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).
+    </p>
   </ol>
 
-  <h4 id="new-popup-Safari">Safari's behavior<a href="#new-popup-Safari" class="self-link"></a></h4>
+  <h3 id="popup-style">browser-dependent popup style<a href="#popup-style" class="self-link"></a></h3>
+
+  <h4 id="popup-style-Chrome">Chrome's behavior / new Edge's behavior<a href="#popup-style-Chrome" class="self-link"></a></h3>
 
   <ol>
-    <li>Open a popup which has only title bar as UI parts.</li>
-    <li>Scrollbars are shown if necessary.</li>
-    <li>The popup is resizable.</li>
-    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
-      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
+    <li>A popup has only title bar and location bar as UI parts.</li>
   </ol>
 
-  <h4 id="new-popup-Edge">old Edge's behavior<a href="#new-popup-Edge" class="self-link"></a></h4>
+  <h4 id="popup-style-Safari">Safari's behavior<a href="#popup-style-Safari" class="self-link"></a></h4>
 
   <ol>
-    <li>Open a popup which has only title bar and location bar as UI parts.</li>
-    <li>Scrollbars are shown if necessary.</li>
-    <li>The popup is resizable.</li>
-    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
-      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
+    <li>A popup has only title bar as UI parts.</li>
   </ol>
 
-  <h4 id="new-popup-Firefox">Proposed Firefox's behavior<a href="#new-popup-Firefox" class="self-link"></a></h4>
+  <h4 id="popup-style-Edge">old Edge's behavior<a href="#popup-style-Edge" class="self-link"></a></h4>
 
   <ol>
-    <li>Open a popup which has only title bar and location bar as UI parts.</li>
-    <li>Scrollbars are shown if necessary.</li>
-    <li>The popup is resizable.</li>
-    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts,
-      except position and size (step 10 in <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a>).</li>
+    <li>A popup has only title bar and location bar as UI parts.</li>
+  </ol>
+
+  <h4 id="popup-style-Firefox">Proposed Firefox's behavior<a href="#popup-style-Firefox" class="self-link"></a></h4>
+
+  <ol>
+    <li>A popup has only title bar and location bar as UI parts.</li>
   </ol>
 
   <h3 id="new-window">Opening a new window<a href="#new-window" class="self-link"></a></h3>
 
-  <h4 id="new-window-Chrome">Chrome's behavior / new Edge's behavior<a href="#new-window-Chrome" class="self-link"></a></h3>
-
-  <p>Not used from <code>window.open</code>.</p>
-
-  <h4 id="new-window-Safari">Safari's behavior<a href="#new-window-Safari" class="self-link"></a></h4>
-
   <ol>
-    <li>Open a normal window which has all UI parts.</li>
-    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts.</li>
+    <li>Open a normal window which has all UI parts.
+    <p class="note">
+      <var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts.
+    </p>
+    </li>
   </ol>
 
-  <h4 id="new-window-Edge">old Edge's behavior<a href="#new-window-Edge" class="self-link"></a></h4>
+  <h3 id="UseMostRecentWindow">browser-dependent UseMostRecentWindow()<a href="#UseMostRecentWindow" class="self-link"></a></h3>
 
-  <p>Not used from <code>window.open</code>.</p>
-
-  <h4 id="new-window-Firefox">Proposed Firefox's behavior<a href="#new-window-Firefox" class="self-link"></a></h4>
+  <h4 id="UseMostRecentWindow-Chrome">Chrome's behavior / new Edge's behavior<a href="#UseMostRecentWindow-Chrome" class="self-link"></a></h3>
 
   <ol>
-    <li>Open a normal window which has all UI parts.</li>
-    <li><var>tokenizedFeatures</var> and <var>windowFeature</var> don't affect UI parts.</li>
-  </ol>
-
-  <h3 id="new-tab">Opening a new tab<a href="#new-tab" class="self-link"></a></h3>
-
-  <h4 id="new-tab-Chrome">Chrome's behavior / new Edge's behavior<a href="#new-tab-Chrome" class="self-link"></a></h3>
-
-  <ol>
-    <li>If this is a popup, then:
+    <li>
+      If there's other window, then:
       <ol>
-        <li>If there's other window, then:
-          <ol>
-            <li>Open a tab in the most recent window.</li>
-          </ol>
-        </li>
-        <li>Else:
-          <ol>
-            <li>Open a tab in a newly created window.</li>
-          </ol>
-        </li>
+        <li>Return true</li>
       </ol>
     </li>
-    <li>Else:
+    <li>
+      Else:
       <ol>
-        <li>Open a tab in this window.</li>
+        <li>Return false</li>
       </ol>
     </li>
   </ol>
 
-  <h4 id="new-tab-Safari">Safari's behavior<a href="#new-tab-Safari" class="self-link"></a></h4>
+  <h4 id="UseMostRecentWindow-Safari">Safari's behavior<a href="#UseMostRecentWindow-Safari" class="self-link"></a></h4>
 
   <ol>
-    <li>If this is a popup, then:
+    <li>
+      If there's other window, then:
       <ol>
-        <li>If there's other window, then:
-          <ol>
-            <li>Open a tab in the most recent window.</li>
-          </ol>
-        </li>
-        <li>Else:
-          <ol>
-            <li>Open a tab in a newly created window.</li>
-          </ol>
-        </li>
+        <li>Return true</li>
       </ol>
     </li>
-    <li>Else:
+    <li>
+      Else:
       <ol>
-        <li>Open a tab in this window.</li>
+        <li>Return false</li>
       </ol>
     </li>
   </ol>
 
-  <h4 id="new-tab-Edge">old Edge's behavior<a href="#new-tab-Edge" class="self-link"></a></h4>
+  <h4 id="UseMostRecentWindow-Edge">old Edge's behavior<a href="#UseMostRecentWindow-Edge" class="self-link"></a></h4>
 
   <ol>
-    <li>If this is a popup, then:
+    <li>Return false</li>
+  </ol>
+
+  <h4 id="UseMostRecentWindow-Firefox">Proposed Firefox's behavior<a href="#UseMostRecentWindow-Firefox" class="self-link"></a></h4>
+
+  <ol>
+    <li>
+      If there's other window, then:
       <ol>
-        <li>Open a tab in a newly created window.</li>
+        <li>Return true</li>
       </ol>
     </li>
-    <li>Else:
+    <li>
+      Else:
       <ol>
-        <li>Open a tab in this window.</li>
+        <li>Return false</li>
       </ol>
     </li>
   </ol>
-
-  <h4 id="new-tab-Firefox">Proposed Firefox's behavior<a href="#new-tab-Firefox" class="self-link"></a></h4>
-
-  <ol>
-    <li>If this is a popup, then:
-      <ol>
-        <li>If there's other window, then:
-          <ol>
-            <li>Open a tab in the most recent window.</li>
-          </ol>
-        </li>
-        <li>Else:
-          <ol>
-            <li>Open a tab in a newly created window.</li>
-          </ol>
-        </li>
-      </ol>
-    </li>
-    <li>Else:
-      <ol>
-        <li>Open a tab in this window.</li>
-      </ol>
-    </li>
-  </ol>
-
-  <h3 id="current-tab">Opening in the curren tab<a href="#current-tab" class="self-link"></a></h3>
-
-  <h4 id="current-tab-Chrome">Chrome's behavior / new Edge's behavior<a href="#current-tab-Chrome" class="self-link"></a></h3>
-  <p>Not used from <code>window.open</code>.</p>
-
-  <h4 id="new-tab-Safari">Safari's behavior<a href="#new-tab-Safari" class="self-link"></a></h4>
-
-  <p>Not used from <code>window.open</code>.</p>
-
-  <h4 id="new-tab-Edge">old Edge's behavior<a href="#new-tab-Edge" class="self-link"></a></h4>
-
-  <p>Not used from <code>window.open</code>.</p>
-
-  <h4 id="new-tab-Firefox">Proposed Firefox's behavior<a href="#new-tab-Firefox" class="self-link"></a></h4>
-
-  <ol>
-    <li>Use the tab that called <code>window.open</code></li>
-  </ol>
-
 </body>
 </html>
