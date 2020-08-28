@@ -88,66 +88,66 @@
 
   <h4 id="GetWindowFeature">GetWindowFeature(<var>tokenizedFeatures</var>)<a href="#GetWindowFeature" class="self-link"></a></h4>
   <ol>
-    <li>Let <var>windowFeature</var> be a new <a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">Record</a>.</li>
+    <li>Let <var>windowFeature</var> be a new <a href="https://infra.spec.whatwg.org/#ordered-map">ordered map</a>.</li>
     <li>If <var>tokenizedFeatures</var> is <a href="https://infra.spec.whatwg.org/#map-is-empty">empty</a>, then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[location]] to true.</li>
-        <li>Set <var>windowFeature</var>.[[menubar]] to true.</li>
-        <li>Set <var>windowFeature</var>.[[resizable]] to true.</li>
-        <li>Set <var>windowFeature</var>.[[scrollbars]] to true.</li>
-        <li>Set <var>windowFeature</var>.[[status]] to true.</li>
-        <li>Set <var>windowFeature</var>.[[toolbar]] to true.</li>
-        <li>Set <var>windowFeature</var>.[[width]] to false.</li>
-        <li>Set <var>windowFeature</var>.[[height]] to false.</li>
+        <li>Set <var>windowFeature</var>["<code>location</code>"] to true.</li>
+        <li>Set <var>windowFeature</var>["<code>menubar</code>"] to true.</li>
+        <li>Set <var>windowFeature</var>["<code>resizable</code>"] to true.</li>
+        <li>Set <var>windowFeature</var>["<code>scrollbars</code>"] to true.</li>
+        <li>Set <var>windowFeature</var>["<code>status</code>"] to true.</li>
+        <li>Set <var>windowFeature</var>["<code>toolbar</code>"] to true.</li>
+        <li>Set <var>windowFeature</var>["<code>width</code>"] to false.</li>
+        <li>Set <var>windowFeature</var>["<code>height</code>"] to false.</li>
         <li>Return <var>windowFeature</var>.</li>
       </ol>
     </li>
-    <li>Set <var>windowFeature</var>.[[location]] to false.</li>
-    <li>Set <var>windowFeature</var>.[[menubar]] to false.</li>
-    <li>Set <var>windowFeature</var>.[[resizable]] to true.</li>
-    <li>Set <var>windowFeature</var>.[[scrollbars]] to false.</li>
-    <li>Set <var>windowFeature</var>.[[status]] to false.</li>
-    <li>Set <var>windowFeature</var>.[[toolbar]] to false.</li>
-    <li>Set <var>windowFeature</var>.[[width]] to false.</li>
-    <li>Set <var>windowFeature</var>.[[height]] to false.</li>
+    <li>Set <var>windowFeature</var>["<code>location</code>"] to false.</li>
+    <li>Set <var>windowFeature</var>["<code>menubar</code>"] to false.</li>
+    <li>Set <var>windowFeature</var>["<code>resizable</code>"] to true.</li>
+    <li>Set <var>windowFeature</var>["<code>scrollbars</code>"] to false.</li>
+    <li>Set <var>windowFeature</var>["<code>status</code>"] to false.</li>
+    <li>Set <var>windowFeature</var>["<code>toolbar</code>"] to false.</li>
+    <li>Set <var>windowFeature</var>["<code>width</code>"] to false.</li>
+    <li>Set <var>windowFeature</var>["<code>height</code>"] to false.</li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>location</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[location]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>location</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>["<code>location</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>location</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>menubar</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[menubar]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>menubar</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>["<code>menubar</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>menubar</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>resizable</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[resizable]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>resizable</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>["<code>resizable</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>resizable</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>scrollbars</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[scrollbars]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>scrollbars</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>["<code>scrollbars</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>scrollbars</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>status</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[status]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>status</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>["<code>status</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>status</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>toolbar</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[toolbar]] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>toolbar</code>"] as a boolean feature.</a></li>
+        <li>Set <var>windowFeature</var>["<code>toolbar</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>toolbar</code>"] as a boolean feature.</a></li>
       </ol>
     </li>
-    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>width</code>" or "<code>innerWidth</code>", then:
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>width</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[width]] to true</li>
+        <li>Set <var>windowFeature</var>["<code>width</code>"] to true</li>
       </ol>
     </li>
-    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>height</code>" or "<code>innerHeight</code>", then:
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>height</code>", then:
       <ol>
-        <li>Set <var>windowFeature</var>.[[height]] to true</li>
+        <li>Set <var>windowFeature</var>["<code>height</code>"] to true</li>
       </ol>
     </li>
     <li>Return <var>windowFeature</var>.</li>
@@ -158,27 +158,27 @@
   <h4 id="IsPopup-Chrome">Chrome's behavior / new Edge's behavior<a href="#IsPopup-Chrome" class="self-link"></a></h3>
 
   <ol>
-    <li>If <var>windowFeature</var>.[[location]] and <var>windowFeature</var>.[[toolbar]] are both false, then:
+    <li>If <var>windowFeature</var>["<code>location</code>"] and <var>windowFeature</var>["<code>toolbar</code>"] are both false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[menubar]] is false, then:
+    <li>If <var>windowFeature</var>["<code>menubar</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[resizable]] is false, then:
+    <li>If <var>windowFeature</var>["<code>resizable</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[scrollbars]] is false, then:
+    <li>If <var>windowFeature</var>["<code>scrollbars</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[status]] is false, then:
+    <li>If <var>windowFeature</var>["<code>status</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
@@ -189,7 +189,7 @@
   <h4 id="IsPopup-Safari">Safari's behavior<a href="#IsPopup-Safari" class="self-link"></a></h4>
 
   <ol>
-    <li>If <var>windowFeature</var>.[[width]] is true, then:
+    <li>If <var>windowFeature</var>["<code>width</code>"] is true, then:
       <ol>
         <li>Return true.</li>
       </ol>
@@ -200,32 +200,32 @@
   <h4 id="IsPopup-Edge">old Edge's behavior<a href="#IsPopup-Edge" class="self-link"></a></h4>
 
   <ol>
-    <li>If <var>windowFeature</var>.[[location]] is false, then:
+    <li>If <var>windowFeature</var>["<code>location</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[menubar]] is false, then:
+    <li>If <var>windowFeature</var>["<code>menubar</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[toolbar]] is false, then:
+    <li>If <var>windowFeature</var>["<code>toolbar</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[resizable]] is false, then:
+    <li>If <var>windowFeature</var>["<code>resizable</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[scrollbars]] is false, then:
+    <li>If <var>windowFeature</var>["<code>scrollbars</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[status]] is false, then:
+    <li>If <var>windowFeature</var>["<code>status</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
@@ -236,32 +236,32 @@
   <h4 id="IsPopup-Firefox">Proposed Firefox's behavior<a href="#IsPopup-Firefox" class="self-link"></a></h4>
 
   <ol>
-    <li>If <var>windowFeature</var>.[[location]] and <var>windowFeature</var>.[[toolbar]] are both false, then:
+    <li>If <var>windowFeature</var>["<code>location</code>"] and <var>windowFeature</var>["<code>toolbar</code>"] are both false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[menubar]] is false, then:
+    <li>If <var>windowFeature</var>["<code>menubar</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[resizable]] is false, then:
+    <li>If <var>windowFeature</var>["<code>resizable</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[scrollbars]] is false, then:
+    <li>If <var>windowFeature</var>["<code>scrollbars</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[status]] is false, then:
+    <li>If <var>windowFeature</var>["<code>status</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[width]] is true, then:
+    <li>If <var>windowFeature</var>["<code>width</code>"] is true, then:
       <ol>
         <li>Return true.</li>
       </ol>
@@ -280,22 +280,22 @@
   <h4 id="IsNewWindow-Safari">Safari's behavior<a href="#IsNewWindow-Safari" class="self-link"></a></h4>
 
   <ol>
-    <li>If <var>windowFeature</var>.[[scrollbars]] is false, then:
+    <li>If <var>windowFeature</var>["<code>scrollbars</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[status]] is false, then:
+    <li>If <var>windowFeature</var>["<code>status</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[toolbar]] is false, then:
+    <li>If <var>windowFeature</var>["<code>toolbar</code>"] is false, then:
       <ol>
         <li>Return true.</li>
       </ol>
     </li>
-    <li>If <var>windowFeature</var>.[[height]] is true, then:
+    <li>If <var>windowFeature</var>["<code>height</code>"] is true, then:
       <ol>
         <li>Return true.</li>
       </ol>
