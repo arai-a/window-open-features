@@ -41,14 +41,14 @@
             <li>Let the <var>target browsing context</var> be in <a href="#new-popup">a new popup</a></li>
           </ol>
         </li>
-        <li>Else:
+        <li>Otherwise:
           <ol>
             <li>If <strong>browser-dependent</strong> <a href="#IsNewWindow">IsNewWindow</a>(<var>windowFeature</var>) is true, then:
               <ol>
                 <li>Let the <var>target browsing context</var> be in a new tab in <a href="#new-window">a new window</a></li>
               </ol>
             </li>
-            <li>Else:
+            <li>Otherwise:
               <ol>
                 <li>If the current window is a popup, then:
                   <ol>
@@ -57,14 +57,14 @@
                         <li>Let the <var>target browsing context</var> be in a new tab in the most recent window.</li>
                       </ol>
                     </li>
-                    <li>Else:
+                    <li>Otherwise:
                       <ol>
                         <li>Let the <var>target browsing context</var> be in a new tab in <a href="#new-window">a new window</a>.</li>
                       </ol>
                     </li>
                   </ol>
                 </li>
-                <li>Else:
+                <li>Otherwise:
                   <ol>
                     <li>Let the <var>target browsing context</var> be in a new tab in the current window.</li>
                   </ol>
@@ -379,7 +379,7 @@
       </ol>
     </li>
     <li>
-      Else:
+      Otherwise:
       <ol>
         <li>Return false</li>
       </ol>
@@ -396,7 +396,7 @@
       </ol>
     </li>
     <li>
-      Else:
+      Otherwise:
       <ol>
         <li>Return false</li>
       </ol>
@@ -419,7 +419,7 @@
       </ol>
     </li>
     <li>
-      Else:
+      Otherwise:
       <ol>
         <li>Return false</li>
       </ol>
