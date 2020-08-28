@@ -48,7 +48,7 @@
                 <li>Let the <var>target browsing context</var> be in a new tab in <a href="#new-window">a new window</a></li>
               </ol>
             </li>
-            <li>Else if <strong>browser-dependent</strong> <a href="#IsNewTab">IsNewTab</a>(<var>windowFeature</var>) is true, then:
+            <li>Else:
               <ol>
                 <li>If the current window is a popup, then:
                   <ol>
@@ -69,16 +69,6 @@
                     <li>Let the <var>target browsing context</var> be in a new tab in the current window.</li>
                   </ol>
                 </li>
-              </ol>
-            </li>
-            <li>Else:
-              <p class="note">
-                See <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1661643">Bug 1661643</a> for removing current tab case.
-              </p>
-              <ol>
-                <li>Let the <var>target browsing context</var> be in the current tab.</li>
-                <li>Let <var>new</var> be false.</li>
-                <li>Let <var>windowType</var> be "<code>existing or none</code>".</li>
               </ol>
             </li>
           </ol>
@@ -329,44 +319,6 @@
     </li>
   </ol>
 
-  <h3 id="IsNewTab">browser-dependent IsNewTab(<var>windowFeature</var>)<a href="#IsNewTab" class="self-link"></a></h3>
-
-  <h4 id="IsNewTab-Chrome">Chrome's behavior / new Edge's behavior<a href="#IsNewTab-Chrome" class="self-link"></a></h3>
-
-  <ol>
-    <li>Return true.</li>
-  </ol>
-
-  <h4 id="IsNewTab-Safari">Safari's behavior<a href="#IsNewTab-Safari" class="self-link"></a></h4>
-
-  <ol>
-    <li>Return true.</li>
-  </ol>
-
-  <h4 id="IsNewTab-Edge">old Edge's behavior<a href="#IsNewTab-Edge" class="self-link"></a></h4>
-
-  <ol>
-    <li>Return true.</li>
-  </ol>
-
-  <h4 id="IsNewTab-Firefox">Firefox's behavior<a href="#IsNewTab-Firefox" class="self-link"></a></h4>
-
-  <p class="note">
-    See <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1661643">Bug 1661643</a> for removing current tab case.
-  </p>
-
-  <ol>
-    <li>if <a href="firefox.html#browser.link.open_newwindow"><code>browser.link.open_newwindow</code></a> pref is 3 (default value), then:
-      <ol>
-        <li>Return true</li>
-      </ol>
-    </li>
-    <li>Else
-      <ol>
-        <li>Return false</li>
-      </ol>
-    </li>
-  </ol>
   <h3 id="new-popup">Opening a new popup<a href="#new-popup" class="self-link"></a></h3>
 
   <ol>
