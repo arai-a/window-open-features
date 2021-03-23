@@ -1,0 +1,353 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>window.open with features</title>
+<link rel="stylesheet" href="https://resources.whatwg.org/spec.css">
+<link rel="stylesheet" href="https://resources.whatwg.org/standard.css">
+<link rel="stylesheet" href="https://resources.whatwg.org/standard-shared-with-dev.css">
+<style>
+.proposal-note {
+    margin: 1.5em 0;
+    padding: 0.5em 1em;
+}
+.proposal-note {
+    position: relative;
+    margin-top: 2em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+.proposal-note {
+    color: blue;
+    background: #DDDDFF;
+    font-style: italic;
+}
+.proposal-note::before {
+    background: blue;
+}
+.proposal-note::before {
+    padding: 0.15em 0.25em;
+    position: absolute;
+    top: -0.8em;
+    left: -0.8em;
+    color: white;
+}
+.proposal-note::before {
+    content: 'Note for Proposal';
+}
+</style>
+</head>
+<body>
+  <h1>Proposal for standardizing window.open with features and BarProp</h1>
+
+  <p>
+    This document proposes how the <cod>features</cod> parameter of
+    <a href="https://html.spec.whatwg.org/multipage/window-object.html#dom-open"><code>window.open</code></a>
+    interacts with where the newly created
+    <a href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context">browsing context</a>
+    is opened, and how it interacts with <a href="https://html.spec.whatwg.org/multipage/window-object.html#browser-interface-elements">BarProp</a>s.
+  </p>
+
+  <h3 id="window-open-steps">Modify <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a><a href="#window-open-steps" class="self-link"></a></h3>
+  <p>
+    Replace "step 12. If <var>new</var> is true, then...", with:
+  </p>
+  <ol>
+    <li>If <var>new</var> is true, then:
+      <ol>
+        <li>Let <var>requestedWebBrowserWindowType</var> be <a href="#GetRequestedWebBrowserWindowType">GetRequestedWebBrowserWindowType</a>(<var>tokenizedFeatures</var>).
+          <p class="proposal-note">
+            I use "web browser window type" term for representing popup/tab/window, because "window type" has different meaning here.  Suggestions welcome.
+          </p>
+        </li>
+        <li>If the user agent has been configured to override the web browser window type, then:
+          <ol>
+            <li>Let <var>webBrowserWindowType</var> be user-configured value, possibly depending on <var>requestedWebBrowserWindowType</var>.
+            </li>
+          </ol>
+          <div class="example">
+            User agents can provide options like:
+            <ul>
+              <li>always use "<code>tab</code>" regardless of <var>requestedWebBrowserWindowType</var> in case the user prefers a tab instead of a popup</li>
+              <li>replace "<code>popup</code>" with <strong>user-agent-dependent</strong> "<code>window</code>" in order to provide full UI parts, while applying "<a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">set up browsing context features</a>" steps</li>
+              <li>replace "<code>tab</code>" with <strong>user-agent-dependent</strong> "<code>window</code>" in case the user agent doesn't provide tab feature</li>
+              <li>replace "<code>tab</code>" with <strong>user-agent-dependent</strong> "<code>window</code>" in case the user prefers a window instead of a tab</li>
+              <li>replace with yet another <strong>user-agent-dependent</strong> string if the user agent provides yet another way to present the browsing context</li>
+            </ul>
+          </div>
+        </li>
+        <li>Otherwise:
+          <ol>
+            <li>Let <var>webBrowserWindowType</var> be <var>requestedWebBrowserWindowType</var>.</li>
+          </ol>
+        </li>
+        <li>If <var>webBrowserWindowType</var> is "<code>popup</code>", then:
+          <ol>
+            <li>Let the <var>target browsing context</var> be in <a href="#new-popup">a new popup</a></li>
+            <li><a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">Set up browsing context features</a> for
+              <var>target browsing context</var> given <var>tokenizedFeatures</var>. <a href="references.html#refsCSSOMVIEW">[CSSOMVIEW]</a>
+            </li>
+          </ol>
+        </li>
+        <li>Otherwise, if <var>webBrowserWindowType</var> is "<code>tab</code>", then:
+          <ol>
+            <li>Let <var>currentWebBrowserWindow</var> be the web browser window that the <var>source browsing context</var> belongs to.</li>
+            <li>If <var>currentWebBrowserWindow</var> can have a new tab, then:
+              <ol>
+                <li>Let the <var>target browsing context</var> be in a new tab in <var>currentWebBrowserWindow</var>.</li>
+              </ol>
+            </li>
+            <li>Otherwise:
+              <ol>
+                <li>If there's a web browser window that can have a new tab, then:
+                  <ol>
+                    <li>Let the <var>target browsing context</var> be in a new tab in the most recent web browser window that can have a new tab.</li>
+                  </ol>
+                </li>
+                <li>Otherwise:
+                  <ol>
+                    <li>Let the <var>target browsing context</var> be in a new tab in <a href="#new-window">a new web browser window</a>.</li>
+                  </ol>
+                </li>
+              </ol>
+            </li>
+          </ol>
+          <p class="note">
+            Opening a new tab doesn't set up browsing context features, given the web browser window is shared between multiple tabs.
+          </p>
+        </li>
+        <li>Otherwise:
+          <ol>
+            <li>Let the <var>target browsing context</var> be in the place defined by <strong>user-agent-dependent</strong> <var>webBrowserWindowType</var> value.</li>
+            <li>If the <strong>user-agent-dependent</strong> <var>webBrowserWindowType</var> value supports, <a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features" data-x-internal="set-up-browsing-context-features">set up browsing context features</a> for
+              <var>target browsing context</var> given <var>tokenizedFeatures</var>. <a href="references.html#refsCSSOMVIEW">[CSSOMVIEW]</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          Set the <a href="#WebBrowserWindowType">[[WebBrowserWindowType]]</a> internal slot of the <var>target browsing context</var> be <var>webBrowserWindowType</var>.
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <h3 id="creating-a-new-browsing-context">Modify <a href="https://html.spec.whatwg.org/multipage/browsers.html#creating-a-new-browsing-context">create a new browsing context</a><a href="#window-open-steps" class="self-link"></a></h3>
+
+  <p>
+    After "step 1. Let <var>browsingContext</var> be ...", insert:
+  </p>
+
+  <ol>
+    <li>
+      Set the <a href="#WebBrowserWindowType">[[WebBrowserWindowType]]</a> internal slot of <var>browsingContext</var> be "<code>tab</code>".
+    </li>
+  </ol>
+
+  <p>
+    Every browsing context has <dfn id="WebBrowserWindowType">[[WebBrowserWindowType]]</dfn> internal slot, that represents the type of the window the browsing context is opened into.
+    The value can be one of "<code>popup</code>", "<code>tab</code>", or <strong>user-agent-dependent</strong> string.
+  </p>
+
+  <h3 id="additional-algorithms">Additional algorithms<a href="#additional-algorithms" class="self-link"></a></h3>
+
+  <h4 id="GetRequestedWebBrowserWindowType">GetRequestedWebBrowserWindowType(<var>tokenizedFeatures</var>)<a href="#GetRequestedWebBrowserWindowType" class="self-link"></a></h4>
+  <ol>
+    <li>If <var>tokenizedFeatures</var> is <a href="https://infra.spec.whatwg.org/#map-is-empty">empty</a>, then:
+      <ol>
+        <li>Return "<code>tab</code>".</li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>width</code>", then:
+      <ol>
+        <li>Return "<code>popup</code>".</li>
+      </ol>
+    </li>
+    <li>Return "<code>tab</code>".</li>
+  </ol>
+
+  <p class="proposal-note">
+    Requesting "<code>popup</code>" if "<code>width</code>" is specified is the minimal condition for backward compatibility.
+    We could add explicit feature for what web browser window type to use, e.g. "<code>type=popup</code>".
+  </p>
+
+  <h4 id="new-popup">Opening a new popup<a href="#new-popup" class="self-link"></a></h4>
+
+  <ol>
+    <li>Open a web browser window with minimal browser UI parts.
+      <ul>
+        <li>Location bar (the user interface element that contains a control that displays the
+          <a href="https://url.spec.whatwg.org/#concept-url">URL</a> of the <a href="https://html.spec.whatwg.org/multipage/browsers.html#active-document">active document</a>, or some similar interface concept) is shown.</li>
+        <li>Scrollbars are shown if necessary.</li>
+        <li>The popup is resizable.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <p class="note">
+    <var>tokenizedFeatures</var> doesn't affect UI parts visibility,
+    except position and size (<a href="https://drafts.csswg.org/cssom-view/#the-features-argument-to-the-open()-method">set up browsing context features</a> steps in CSSOMVIEW.)
+  </p>
+
+  <h4 id="new-window">Opening a new web browser window<a href="#new-window" class="self-link"></a></h4>
+
+  <ol>
+    <li>Open a normal web browser window with all UI parts.</li>
+  </ol>
+
+  <p class="note">
+    <var>tokenizedFeatures</var> doesn't affect UI parts visibility.
+  </p>
+
+  <h3 id=browser-interface-elements>Replace <a href="https://html.spec.whatwg.org/multipage/window-object.html#browser-interface-elements">Browser interface elements<a href=#browser-interface-elements class=self-link></a></h3>
+
+  <p>For historical reasons, <code>Window</code> object has some attributes that represents certain web browser interface elements.</p>
+
+  <p>For privacy reasons and interoperability, those attributes return same value, regardless of whether the interface element is visible or not.</p>
+
+  <p>Each interface element is represented by a <code id=browser-interface-elements:barprop><a href=#barprop>BarProp</a></code> object:</p>
+
+  <pre><code class='idl'>[<c- g>Exposed</c->=<c- n>Window</c->]
+<c- b>interface</c-> <dfn id='barprop'><c- g>BarProp</c-></dfn> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <c- b>boolean</c-> <a href='#dom-barprop-visible' id='browser-interface-elements:dom-barprop-visible'><c- g>visible</c-></a>;
+};</code></pre>
+
+  <dl class=domintro>
+    <dt>
+      <var>window</var> . <code id=dom-window-locationbar-dev><a href=#dom-window-locationbar>locationbar</a></code> . <code id=dom-barprop-visible-dev><a href=#dom-barprop-visible>visible</a></code>
+    </dt>
+   <dt>
+     <var>window</var> . <code id=dom-window-menubar-dev><a href=#dom-window-menubar>menubar</a></code> . <code id=browser-interface-elements:dom-barprop-visible-2><a href=#dom-barprop-visible>visible</a></code>
+    </dt>
+    <dt>
+      <var>window</var> . <code id=dom-window-personalbar-dev><a href=#dom-window-personalbar>personalbar</a></code> . <code id=browser-interface-elements:dom-barprop-visible-3><a href=#dom-barprop-visible>visible</a></code>
+    </dt>
+    <dt>
+      <var>window</var> . <code id=dom-window-scrollbars-dev><a href=#dom-window-scrollbars>scrollbars</a></code> . <code id=browser-interface-elements:dom-barprop-visible-4><a href=#dom-barprop-visible>visible</a></code>
+    </dt>
+    <dt>
+      <var>window</var> . <code id=dom-window-statusbar-dev><a href=#dom-window-statusbar>statusbar</a></code> . <code id=browser-interface-elements:dom-barprop-visible-5><a href=#dom-barprop-visible>visible</a></code>
+    </dt>
+    <dt>
+      <var>window</var> . <code id=dom-window-toolbar-dev><a href=#dom-window-toolbar>toolbar</a></code> . <code id=browser-interface-elements:dom-barprop-visible-6><a href=#dom-barprop-visible>visible</a></code>
+    </dt>
+    <dd>
+      <p>Returns true if the current browser window is not a popup; otherwise, returns false.</p>
+    </dd>
+  </dl>
+
+  <p>The <dfn id=dom-barprop-visible>visible</dfn> attribute's getter must run these
+  steps:</p>
+
+  <ol>
+    <li>
+      Let <var>browsingContext</var> be <code id=browser-interface-elements:barprop-2><a href=#barprop>BarProp</a></code> object's <a id=browser-interface-elements:concept-relevant-global href=webappapis.html#concept-relevant-global>relevant global object</a>'s <a href=#window-bc id=browser-interface-elements:window-bc>browsing context</a>.
+    </li>
+    <li>
+      If <var>browsingContext</var> is null, then return true.
+    </li>
+    <li>
+      If <var>browsingContext</var> does not have <a href="#WebBrowserWindowType">[[WebBrowserWindowType]]</a> internal slot, then return true.
+    </li>
+    <li>
+      Let <var>webBrowserWindowType</var> <var>browsingContext</var>'s <a href="#WebBrowserWindowType">[[WebBrowserWindowType]]</a> internal slot.
+    </li>
+    <li>
+      If <var>webBrowserWindowType</var> is "<code>popup</code>", then return false.
+    </li>
+    <li>
+      If <var>webBrowserWindowType</var> is "<code>tab</code>", then return true.
+    </li>
+    <li>
+      Return either true or false for <strong>user-agent-dependent</strong> <var>webBrowserWindowType</var> value.
+    </li>
+  </ol>
+
+  <p>The following <code><a href=#barprop>BarProp</a></code> objects must exist for each <code><a href=#window>Window</a></code> object:</p>
+
+  <p class="proposal-note">
+    Technically, those attributes can share single object.
+    If there's no web-compat issue, we can eliminate per-attribute <code>BarProp</code> object.
+  </p>
+
+  <dl>
+    <dt>
+      <dfn id=the-location-bar-barprop-object>The location bar <code>BarProp</code> object</dfn></dt>
+    <dd>
+      <p class="note">
+        Historically represented the user interface element that contains a control that displays the
+        <a href="https://url.spec.whatwg.org/#concept-url">URL</a> of the <a href="https://html.spec.whatwg.org/multipage/browsers.html#active-document">active document</a>, or some similar interface concept.
+      </p>
+    </dd>
+    <dt>
+      <dfn id=the-menu-bar-barprop-object>The menu bar <code>BarProp</code> object</dfn>
+    </dt>
+    <dd>
+      <p class="note">
+        Historically represented the user interface element that contains a list of commands in menu form, or some
+        similar interface concept.
+      </p>
+    </dd>
+    <dt>
+      <dfn id=the-personal-bar-barprop-object>The personal bar <code>BarProp</code> object</dfn>
+    </dt>
+    <dd>
+      <p class="note">
+        Historically represented the user interface element that contains links to the user's favorite pages, or
+        some similar interface concept.
+      </p>
+    </dd>
+    <dt>
+      <dfn id=the-scrollbar-barprop-object>The scrollbar <code>BarProp</code> object</dfn>
+    </dt>
+    <dd>
+      <p class="note">
+        Historically represented the user interface element that contains a scrolling mechanism, or some similar
+        interface concept.
+      </p>
+    </dd>
+    <dt>
+      <dfn id=the-status-bar-barprop-object>The status bar <code>BarProp</code> object</dfn>
+    </dt>
+    <dd>
+      <p class="note">
+        Historically represented a user interface element found immediately below or after the document, as
+        appropriate for the user's media, which typically provides information about ongoing network
+        activity or information about elements that the user's pointing device is current indicating. If
+        the user agent has no such user interface element, then the object may act as if the
+        corresponding user interface element was absent (i.e. its <code id=browser-interface-elements:dom-barprop-visible-7><a href=#dom-barprop-visible>visible</a></code> attribute may return false).
+      </p>
+    </dd>
+    <dt>
+      <dfn id=the-toolbar-barprop-object>The toolbar <code>BarProp</code> object</dfn>
+    </dt>
+    <dd>
+      <p class="note">
+        Historically represented the user interface element found immediately above or before the document, as
+        appropriate for the user's media, which typically provides <a id=browser-interface-elements:session-history href=history.html#session-history>session history</a> traversal
+        controls (back and forward buttons, reload buttons, etc). If the user agent has no such user
+        interface element, then the object may act as if the corresponding user interface element was
+        absent (i.e. its <code id=browser-interface-elements:dom-barprop-visible-8><a href=#dom-barprop-visible>visible</a></code> attribute may return
+        false).
+      </p>
+    </dd>
+  </dl>
+
+  <p>The <dfn data-dfn-for=Window id=dom-window-locationbar data-dfn-type=attribute><code>locationbar</code></dfn>
+  attribute must return <a href=#the-location-bar-barprop-object id=browser-interface-elements:the-location-bar-barprop-object>the location bar <code>BarProp</code> object</a>.</p>
+
+  <p>The <dfn data-dfn-for=Window id=dom-window-menubar data-dfn-type=attribute><code>menubar</code></dfn>
+  attribute must return <a href=#the-menu-bar-barprop-object id=browser-interface-elements:the-menu-bar-barprop-object>the menu bar <code>BarProp</code> object</a>.</p>
+
+  <p>The <dfn data-dfn-for=Window id=dom-window-personalbar data-dfn-type=attribute><code>personalbar</code></dfn>
+  attribute must return <a href=#the-personal-bar-barprop-object id=browser-interface-elements:the-personal-bar-barprop-object>the personal bar <code>BarProp</code> object</a>.</p>
+
+  <p>The <dfn data-dfn-for=Window id=dom-window-scrollbars data-dfn-type=attribute><code>scrollbars</code></dfn>
+  attribute must return <a href=#the-scrollbar-barprop-object id=browser-interface-elements:the-scrollbar-barprop-object>the scrollbar <code>BarProp</code> object</a>.</p>
+
+  <p>The <dfn data-dfn-for=Window id=dom-window-statusbar data-dfn-type=attribute><code>statusbar</code></dfn>
+  attribute must return <a href=#the-status-bar-barprop-object id=browser-interface-elements:the-status-bar-barprop-object>the status bar <code>BarProp</code> object</a>.</p>
+
+  <p>The <dfn data-dfn-for=Window id=dom-window-toolbar data-dfn-type=attribute><code>toolbar</code></dfn>
+    attribute must return <a href=#the-toolbar-barprop-object id=browser-interface-elements:the-toolbar-barprop-object>the toolbar <code>BarProp</code> object</a>.</p>
+</body>
+</html>
