@@ -55,77 +55,25 @@
   <ol>
     <li>If <var>new</var> is true, then:
       <ol>
-        <li>Let <var>requestedWebBrowserWindowType</var> be <a href="#GetRequestedWebBrowserWindowType">GetRequestedWebBrowserWindowType</a>(<var>tokenizedFeatures</var>).
-          <p class="proposal-note">
-            I use "web browser window type" term for representing popup/tab/window, because "window type" has different meaning here.  Suggestions welcome.
-          </p>
+        <li>Let <var>isPopupRequested</var> be <a href="#IsPopupRequested">IsPopupRequested</a>(<var>tokenizedFeatures</var>).
         </li>
-        <li>If the user agent has been configured to override the web browser window type, then:
+        <li>If the user agent has been configured to override <var>isPopupRequested</var>:
           <ol>
-            <li>Let <var>webBrowserWindowType</var> be user-configured value, possibly depending on <var>requestedWebBrowserWindowType</var>.
+            <li>Let <var>isPopup</var> be user-configured value, possibly depending on <var>isPopupRequested</var>.
             </li>
           </ol>
-          <div class="example">
-            User agents can provide options like:
-            <ul>
-              <li>always use "<code>tab</code>" regardless of <var>requestedWebBrowserWindowType</var> in case the user prefers a tab instead of a popup</li>
-              <li>replace "<code>popup</code>" with <strong>user-agent-dependent</strong> "<code>window</code>" in order to provide full UI parts, while applying "<a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">set up browsing context features</a>" steps</li>
-              <li>replace "<code>tab</code>" with <strong>user-agent-dependent</strong> "<code>window</code>" in case the user agent doesn't provide tab feature</li>
-              <li>replace "<code>tab</code>" with <strong>user-agent-dependent</strong> "<code>window</code>" in case the user prefers a window instead of a tab</li>
-              <li>replace with yet another <strong>user-agent-dependent</strong> string if the user agent provides yet another way to present the browsing context</li>
-            </ul>
-          </div>
         </li>
         <li>Otherwise:
           <ol>
-            <li>Let <var>webBrowserWindowType</var> be <var>requestedWebBrowserWindowType</var>.</li>
-          </ol>
-        </li>
-        <li>If <var>webBrowserWindowType</var> is "<code>popup</code>", then:
-          <ol>
-            <li>Let the <var>target browsing context</var> be in <a href="#new-popup">a new popup</a></li>
-            <li><a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">Set up browsing context features</a> for
-              <var>target browsing context</var> given <var>tokenizedFeatures</var>. <a href="references.html#refsCSSOMVIEW">[CSSOMVIEW]</a>
-            </li>
-          </ol>
-        </li>
-        <li>Otherwise, if <var>webBrowserWindowType</var> is "<code>tab</code>", then:
-          <ol>
-            <li>Let <var>currentWebBrowserWindow</var> be the web browser window that the <var>source browsing context</var> belongs to.</li>
-            <li>If <var>currentWebBrowserWindow</var> can have a new tab, then:
-              <ol>
-                <li>Let the <var>target browsing context</var> be in a new tab in <var>currentWebBrowserWindow</var>.</li>
-              </ol>
-            </li>
-            <li>Otherwise:
-              <ol>
-                <li>If there's a web browser window that can have a new tab, then:
-                  <ol>
-                    <li>Let the <var>target browsing context</var> be in a new tab in the most recent web browser window that can have a new tab.</li>
-                  </ol>
-                </li>
-                <li>Otherwise:
-                  <ol>
-                    <li>Let the <var>target browsing context</var> be in a new tab in <a href="#new-window">a new web browser window</a>.</li>
-                  </ol>
-                </li>
-              </ol>
-            </li>
-          </ol>
-          <p class="note">
-            Opening a new tab doesn't set up browsing context features, given the web browser window is shared between multiple tabs.
-          </p>
-        </li>
-        <li>Otherwise:
-          <ol>
-            <li>Let the <var>target browsing context</var> be in the place defined by <strong>user-agent-dependent</strong> <var>webBrowserWindowType</var> value.</li>
-            <li>If the <strong>user-agent-dependent</strong> <var>webBrowserWindowType</var> value supports, <a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features" data-x-internal="set-up-browsing-context-features">set up browsing context features</a> for
-              <var>target browsing context</var> given <var>tokenizedFeatures</var>. <a href="references.html#refsCSSOMVIEW">[CSSOMVIEW]</a>
-            </li>
+            <li>Let <var>isPopup</var> be <var>isPopupRequested</var>.</li>
           </ol>
         </li>
         <li>
-          Set the <a href="#WebBrowserWindowType">[[WebBrowserWindowType]]</a> internal slot of the <var>target browsing context</var> be <var>webBrowserWindowType</var>.
+          Set the <a href="#IsPopup">[[IsPopup]]</a> internal slot of the <var>target browsing context</var> be <var>isPopup</var>.
+        </li>
+        <li>
+          <a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">Set up browsing context features</a> for
+          <var>target browsing context</var> given <var>tokenizedFeatures</var>. <a href="references.html#refsCSSOMVIEW">[CSSOMVIEW]</a>
         </li>
       </ol>
     </li>
@@ -139,63 +87,52 @@
 
   <ol>
     <li>
-      Set the <a href="#WebBrowserWindowType">[[WebBrowserWindowType]]</a> internal slot of <var>browsingContext</var> be "<code>tab</code>".
+      If <var>embedder</var> is null, then:
+      <ol>
+        <li>
+          Set the <a href="#IsPopup">[[IsPopup]]</a> internal slot of <var>browsingContext</var> be false.
+        </li>
+      </ol>
     </li>
   </ol>
 
   <p>
-    Every browsing context has <dfn id="WebBrowserWindowType">[[WebBrowserWindowType]]</dfn> internal slot, that represents the type of the window the browsing context is opened into.
-    The value can be one of "<code>popup</code>", "<code>tab</code>", or <strong>user-agent-dependent</strong> string.
+    Every <a href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context">top-level browsing context</a> has <dfn id="IsPopup">[[IsPopup]]</dfn> internal slot, that represents whether the <a href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context">browsing context</a> is created by requesting a popup or not.
+  </p>
+
+  <p class="note">
+    User agent can use <a href="#IsPopup">[[IsPopup]]</a> value to decide what kind of web browser interface to provide for the <a href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context">browsing context</a>.
+  </p>
+
+  <p class="example">
+    For example, user agent can provide minimal UI if <a href="#IsPopup">[[IsPopup]]</a> is true.
+     In the minimal UI, It's recommended not to hide the browser interface element that displays the <a href="https://url.spec.whatwg.org/#concept-url">URL</a> or the domain of the <a href="https://html.spec.whatwg.org/multipage/browsers.html#active-document">active document</a>.
+  </p>
+
+  <p class="note">
+    User agent can use <a href="#IsPopup">[[IsPopup]]</a> value to decide whether to apply the optional steps in <a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">set up browsing context features</a> steps or not.
   </p>
 
   <h3 id="additional-algorithms">Additional algorithms<a href="#additional-algorithms" class="self-link"></a></h3>
 
-  <h4 id="GetRequestedWebBrowserWindowType">GetRequestedWebBrowserWindowType(<var>tokenizedFeatures</var>)<a href="#GetRequestedWebBrowserWindowType" class="self-link"></a></h4>
+  <h4 id="IsPopupRequested">IsPopupRequested(<var>tokenizedFeatures</var>)<a href="#IsPopupRequested" class="self-link"></a></h4>
   <ol>
     <li>If <var>tokenizedFeatures</var> is <a href="https://infra.spec.whatwg.org/#map-is-empty">empty</a>, then:
       <ol>
-        <li>Return "<code>tab</code>".</li>
+        <li>Return false.</li>
       </ol>
     </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>width</code>", then:
       <ol>
-        <li>Return "<code>popup</code>".</li>
+        <li>Return true.</li>
       </ol>
     </li>
-    <li>Return "<code>tab</code>".</li>
+    <li>Return false.</li>
   </ol>
 
   <p class="proposal-note">
-    Requesting "<code>popup</code>" if "<code>width</code>" is specified is the minimal condition for backward compatibility.
-    We could add explicit feature for what web browser window type to use, e.g. "<code>type=popup</code>".
-  </p>
-
-  <h4 id="new-popup">Opening a new popup<a href="#new-popup" class="self-link"></a></h4>
-
-  <ol>
-    <li>Open a web browser window with minimal browser UI parts.
-      <ul>
-        <li>Location bar (the user interface element that contains a control that displays the
-          <a href="https://url.spec.whatwg.org/#concept-url">URL</a> of the <a href="https://html.spec.whatwg.org/multipage/browsers.html#active-document">active document</a>, or some similar interface concept) is shown.</li>
-        <li>Scrollbars are shown if necessary.</li>
-        <li>The popup is resizable.</li>
-      </ul>
-    </li>
-  </ol>
-
-  <p class="note">
-    <var>tokenizedFeatures</var> doesn't affect UI parts visibility,
-    except position and size (<a href="https://drafts.csswg.org/cssom-view/#the-features-argument-to-the-open()-method">set up browsing context features</a> steps in CSSOMVIEW.)
-  </p>
-
-  <h4 id="new-window">Opening a new web browser window<a href="#new-window" class="self-link"></a></h4>
-
-  <ol>
-    <li>Open a normal web browser window with all UI parts.</li>
-  </ol>
-
-  <p class="note">
-    <var>tokenizedFeatures</var> doesn't affect UI parts visibility.
+    Requesting popup if "<code>width</code>" is specified is the minimal condition for backward compatibility.
+    We could add explicit feature for requesting popup, e.g. "<code>type=popup</code>".
   </p>
 
   <h3 id=browser-interface-elements>Replace <a href="https://html.spec.whatwg.org/multipage/window-object.html#browser-interface-elements">Browser interface elements<a href=#browser-interface-elements class=self-link></a></h3>
@@ -231,7 +168,7 @@
       <var>window</var> . <code id=dom-window-toolbar-dev><a href=#dom-window-toolbar>toolbar</a></code> . <code id=browser-interface-elements:dom-barprop-visible-6><a href=#dom-barprop-visible>visible</a></code>
     </dt>
     <dd>
-      <p>Returns true if the current browser window is not a popup; otherwise, returns false.</p>
+      <p>Returns true if the <a href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context">top-level browsing context</a> is not a popup; otherwise, returns false.</p>
     </dd>
   </dl>
 
@@ -246,19 +183,16 @@
       If <var>browsingContext</var> is null, then return true.
     </li>
     <li>
-      If <var>browsingContext</var> does not have <a href="#WebBrowserWindowType">[[WebBrowserWindowType]]</a> internal slot, then return true.
+      Let <var>topLevelBrowsingContext</var> be <var>browsingContext</var>'s <a href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context">top-level browsing context</a>.
     </li>
     <li>
-      Let <var>webBrowserWindowType</var> <var>browsingContext</var>'s <a href="#WebBrowserWindowType">[[WebBrowserWindowType]]</a> internal slot.
+      Let <var>isPopup</var> be <var>topLevelBrowsingContext</var>'s <a href="#IsPopup">[[IsPopup]]</a> internal slot.
     </li>
     <li>
-      If <var>webBrowserWindowType</var> is "<code>popup</code>", then return false.
+      If <var>isPopup</var> is true, then return false.
     </li>
     <li>
-      If <var>webBrowserWindowType</var> is "<code>tab</code>", then return true.
-    </li>
-    <li>
-      Return either true or false for <strong>user-agent-dependent</strong> <var>webBrowserWindowType</var> value.
+      Return true.
     </li>
   </ol>
 
