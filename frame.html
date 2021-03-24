@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<title>test</title>
+<body>
+<script>
+let visibilityList = [
+  "locationbar",
+  "menubar",
+  "personalbar",
+  "scrollbars",
+  "statusbar",
+  "toolbar",
+];
+
+let table2 = document.createElement("table");
+table2.border = 1;
+
+for (let name of visibilityList) {
+  let tr = document.createElement("tr");
+
+  let th = document.createElement("td");
+  let text;
+  if (window[name]) {
+    text = "window." + name + ".visible";
+  } else {
+    text = "window." + name;
+  }
+  th.appendChild(document.createTextNode(text));
+
+  tr.appendChild(th);
+
+  let td = document.createElement("td");
+  let text2;
+  if (window[name]) {
+    text2 = window[name].visible;
+  } else {
+    text2 = "doesn't exist";
+  }
+  td.appendChild(document.createTextNode(text2));
+
+  tr.appendChild(td);
+  table2.appendChild(tr);
+}
+
+document.body.appendChild(table2);
+</script>
+</body>
+</html>
