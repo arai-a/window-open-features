@@ -69,7 +69,7 @@
           </ol>
         </li>
         <li>
-          Set the <a href="#IsPopup">[[IsPopup]]</a> internal slot of the <var>target browsing context</var> to <var>isPopup</var>.
+          Set the <var>target browsing context</var>'s <a href="#is-popup">is popup</a> to <var>isPopup</var>.
         </li>
         <li>
           <a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">Set up browsing context features</a> for
@@ -79,49 +79,33 @@
     </li>
   </ol>
 
-  <h3 id="creating-a-new-browsing-context">Modify <a href="https://html.spec.whatwg.org/multipage/browsers.html#creating-a-new-browsing-context">create a new browsing context</a><a href="#window-open-steps" class="self-link"></a></h3>
+  <h3 id="modify-top-level-browsing-context">Modify <a href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context">top-level browsing context</a><a href="#modify-top-level-browsing-context" class="self-link"></a></h3>
 
   <p>
-    After "step 1. Let <var>browsingContext</var> be ...", insert:
+    After "A top-level browsing context has an associated", insert:
   </p>
-
-  <ol>
-    <li>
-      If <var>embedder</var> is null, then:
-      <ol>
-        <li>
-          Set the <a href="#IsPopup">[[IsPopup]]</a> internal slot of <var>browsingContext</var> be false.
-        </li>
-      </ol>
-    </li>
-  </ol>
 
   <p>
-    Every <a href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context">top-level browsing context</a> has <dfn id="IsPopup">[[IsPopup]]</dfn> internal slot, that represents whether the <a href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context">browsing context</a> is created by requesting a popup or not.
-  </p>
+
+  <p>A <a href="#top-level-browsing-context">top-level browsing context</a> has an <dfn id="is-popup">is popup</dfn> boolean. It is initially false.</p>
 
   <p class="note">
-    User agent can use <a href="#IsPopup">[[IsPopup]]</a> value to decide what kind of web browser interface to provide for the <a href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context">browsing context</a>.
+    User agent can use <a href="#is-popup">is popup</a> value to decide what kind of web browser interface to provide for the <a href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context">browsing context</a>.
   </p>
 
   <p class="example">
-    For example, user agent can provide minimal UI if <a href="#IsPopup">[[IsPopup]]</a> is true.
+    For example, user agent can provide minimal UI if <a href="#is-popup">is popup</a> is true.
      In the minimal UI, it's recommended not to hide the browser interface element that displays the <a href="https://url.spec.whatwg.org/#concept-url">URL</a> or the domain of the <a href="https://html.spec.whatwg.org/multipage/browsers.html#active-document">active document</a>.
   </p>
 
   <p class="note">
-    User agent can use <a href="#IsPopup">[[IsPopup]]</a> value to decide whether to perform the optional steps in <a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">set up browsing context features</a> steps or not.
+    User agent can use <a href="#is-popup">is popup</a> value to decide whether to perform the optional steps in <a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">set up browsing context features</a> steps or not.
   </p>
 
   <h3 id="additional-algorithms">Additional algorithms<a href="#additional-algorithms" class="self-link"></a></h3>
 
-  <h4 id="IsPopupRequested">IsPopupRequested(<var>tokenizedFeatures</var>)<a href="#IsPopupRequested" class="self-link"></a></h4>
+  <h4 id="IsPopupRequested">IsPopupRequested(<var>tokenizedFeatures</var>)<a href="#is-popupRequested" class="self-link"></a></h4>
   <ol>
-    <li>If <var>tokenizedFeatures</var> is <a href="https://infra.spec.whatwg.org/#map-is-empty">empty</a>, then:
-      <ol>
-        <li>Return false.</li>
-      </ol>
-    </li>
     <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>width</code>", then:
       <ol>
         <li>Return true.</li>
@@ -186,7 +170,7 @@
       Let <var>topLevelBrowsingContext</var> be <var>browsingContext</var>'s <a href="https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context">top-level browsing context</a>.
     </li>
     <li>
-      Let <var>isPopup</var> be <var>topLevelBrowsingContext</var>'s <a href="#IsPopup">[[IsPopup]]</a> internal slot.
+      Let <var>isPopup</var> be <var>topLevelBrowsingContext</var>'s <a href="#is-popup">is popup</a>.
     </li>
     <li>
       If <var>isPopup</var> is true, then return false.
