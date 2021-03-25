@@ -55,7 +55,20 @@
   <ol>
     <li>If <var>new</var> is true, then:
       <ol>
-        <li>Let <var>isPopupRequested</var> be <a href="#IsPopupRequested">IsPopupRequested</a>(<var>tokenizedFeatures</var>).
+        <li>If <var>tokenizedFeatures</var>["<code>width</code>"] <a href="https://infra.spec.whatwg.org/#map-exists">exists</a>, then:
+          <ol>
+            <li>Let <var>isPopupRequested</var> be true.</li>
+          </ol>
+        </li>
+        <li>Otherwise:
+          <ol>
+            <li>Let <var>isPopupRequested</var> be false.</li>
+          </ol>
+        </li>
+        <li>If <var>tokenizedFeatures</var>["<code>width</code>"] <a href="https://infra.spec.whatwg.org/#map-exists">exists</a>, then:
+          <ol>
+            <li>Let <var>isPopupRequested</var> be true.</li>
+          </ol>
         </li>
         <li>If the user agent has been configured to override <var>isPopupRequested</var>:
           <ol>
@@ -100,23 +113,6 @@
 
   <p class="note">
     User agent can use <a href="#is-popup">is popup</a> value to decide whether to perform the optional steps in <a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">set up browsing context features</a> steps or not.
-  </p>
-
-  <h3 id="additional-algorithms">Additional algorithms<a href="#additional-algorithms" class="self-link"></a></h3>
-
-  <h4 id="IsPopupRequested">IsPopupRequested(<var>tokenizedFeatures</var>)<a href="#is-popupRequested" class="self-link"></a></h4>
-  <ol>
-    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>width</code>", then:
-      <ol>
-        <li>Return true.</li>
-      </ol>
-    </li>
-    <li>Return false.</li>
-  </ol>
-
-  <p class="proposal-note">
-    Requesting popup if "<code>width</code>" is specified is the minimal condition for backward compatibility.
-    We could add explicit feature for requesting popup, e.g. "<code>type=popup</code>".
   </p>
 
   <h3 id=browser-interface-elements>Replace <a href="https://html.spec.whatwg.org/multipage/window-object.html#browser-interface-elements">Browser interface elements<a href=#browser-interface-elements class=self-link></a></h3>
