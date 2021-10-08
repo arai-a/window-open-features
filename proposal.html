@@ -48,6 +48,16 @@
     is opened, and how it interacts with <a href="https://html.spec.whatwg.org/multipage/window-object.html#browser-interface-elements">BarProp</a>s.
   </p>
 
+  <ul>
+    <li>Update on 2021-10-08
+      <ul>
+        <li>Change the condition match to the current Chromium behavior</li>
+        <li>Made "is popup" not-overrideable, but allow user agent to ignore it for UI visibility</li>
+        <li>Add <code>type</code> feature (<code>type=popup</code> or <code>type=window</code>)</li>
+      </ul>
+    </li>
+  </ul>
+
   <h3 id="window-open-steps">Modify <a href="https://html.spec.whatwg.org/multipage/window-object.html#window-open-steps">window open steps</a><a href="#window-open-steps" class="self-link"></a></h3>
   <p>
     Replace "step 12. If <var>new</var> is true, then...", with:
@@ -55,34 +65,9 @@
   <ol>
     <li>If <var>new</var> is true, then:
       <ol>
-        <li>If <var>tokenizedFeatures</var>["<code>width</code>"] <a href="https://infra.spec.whatwg.org/#map-exists">exists</a>, then:
-          <ol>
-            <li>Let <var>isPopupRequested</var> be true.</li>
-          </ol>
-        </li>
-        <li>Otherwise:
-          <ol>
-            <li>Let <var>isPopupRequested</var> be false.</li>
-          </ol>
-        </li>
-        <li>If <var>tokenizedFeatures</var>["<code>width</code>"] <a href="https://infra.spec.whatwg.org/#map-exists">exists</a>, then:
-          <ol>
-            <li>Let <var>isPopupRequested</var> be true.</li>
-          </ol>
-        </li>
-        <li>If the user agent has been configured to override <var>isPopupRequested</var>:
-          <ol>
-            <li>Let <var>isPopup</var> be user-configured value, possibly depending on <var>isPopupRequested</var>.
-            </li>
-          </ol>
-        </li>
-        <li>Otherwise:
-          <ol>
-            <li>Let <var>isPopup</var> be <var>isPopupRequested</var>.</li>
-          </ol>
-        </li>
+        <li>Let <var>windowFeature</var> be <a href="#GetWindowFeature">GetWindowFeature</a>(<var>tokenizedFeatures</var>).</li>
         <li>
-          Set the <var>target browsing context</var>'s <a href="#is-popup">is popup</a> to <var>isPopup</var>.
+          Set the <var>target browsing context</var>'s <a href="#is-popup">is popup</a> to <a href="#IsPopup">IsPopup</a>(<var>windowFeature</var>).
         </li>
         <li>
           <a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">Set up browsing context features</a> for
@@ -100,10 +85,11 @@
 
   <p>
 
-  <p>A <a href="#top-level-browsing-context">top-level browsing context</a> has an <dfn id="is-popup">is popup</dfn> boolean. It is initially false.</p>
+  <p>A <a href="#top-level-browsing-context">top-level browsing context</a> has an <dfn id="is-popup">is popup</dfn> boolean. It is initially false.
+  </p>
 
   <p class="note">
-    User agent can use <a href="#is-popup">is popup</a> value to decide what kind of web browser interface to provide for the <a href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context">browsing context</a>.
+    User agent can use <a href="#is-popup">is popup</a> value to decide what kind of web browser interface to provide for the <a href="https://html.spec.whatwg.org/multipage/browsers.html#browsing-context">browsing context</a>, or provide an option to user to do or do not so.
   </p>
 
   <p class="example">
@@ -112,8 +98,110 @@
   </p>
 
   <p class="note">
-    User agent can use <a href="#is-popup">is popup</a> value to decide whether to perform the optional steps in <a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">set up browsing context features</a> steps or not.
+    User agent can use <a href="#is-popup">is popup</a> value to decide whether to perform the optional steps in <a href="https://drafts.csswg.org/cssom-view/#set-up-browsing-context-features">set up browsing context features</a> steps or not, or provide an option to user to do or do not so.
   </p>
+
+  <h3 id="additional-algorithms">Additional algorithms<a href="#additional-algorithms" class="self-link"></a></h3>
+
+  <h4 id="GetWindowFeature">GetWindowFeature(<var>tokenizedFeatures</var>)<a href="#GetWindowFeature" class="self-link"></a></h4>
+  <ol>
+    <li>Let <var>windowFeature</var> be a new <a href="https://infra.spec.whatwg.org/#ordered-map">ordered map</a>.</li>
+    <li>If <var>tokenizedFeatures</var> is <a href="https://infra.spec.whatwg.org/#map-is-empty">empty</a>, then:
+      <ol>
+        <li>Set <var>windowFeature</var>["<code>type</code>"] to "".</li>
+        <li>Set <var>windowFeature</var>["<code>location</code>"] to true.</li>
+        <li>Set <var>windowFeature</var>["<code>menubar</code>"] to true.</li>
+        <li>Set <var>windowFeature</var>["<code>resizable</code>"] to true.</li>
+        <li>Set <var>windowFeature</var>["<code>scrollbars</code>"] to true.</li>
+        <li>Set <var>windowFeature</var>["<code>status</code>"] to true.</li>
+        <li>Set <var>windowFeature</var>["<code>toolbar</code>"] to true.</li>
+        <li>Return <var>windowFeature</var>.</li>
+      </ol>
+    </li>
+    <li>Set <var>windowFeature</var>["<code>type</code>"] to "".</li>
+    <li>Set <var>windowFeature</var>["<code>location</code>"] to false.</li>
+    <li>Set <var>windowFeature</var>["<code>menubar</code>"] to false.</li>
+    <li>Set <var>windowFeature</var>["<code>resizable</code>"] to true.</li>
+    <li>Set <var>windowFeature</var>["<code>scrollbars</code>"] to false.</li>
+    <li>Set <var>windowFeature</var>["<code>status</code>"] to false.</li>
+    <li>Set <var>windowFeature</var>["<code>toolbar</code>"] to false.</li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>type</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>["<code>type</code>"] to <var>tokenizedFeatures</var>["<code>type</code>"].</li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>location</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>["<code>location</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>location</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>menubar</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>["<code>menubar</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>menubar</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>resizable</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>["<code>resizable</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>resizable</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>scrollbars</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>["<code>scrollbars</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>scrollbars</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>status</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>["<code>status</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>status</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>toolbar</code>", then:
+      <ol>
+        <li>Set <var>windowFeature</var>["<code>toolbar</code>"] to the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>["<code>toolbar</code>"] as a boolean feature.</a></li>
+      </ol>
+    </li>
+    <li>Return <var>windowFeature</var>.</li>
+  </ol>
+
+  <h4 id="IsPopup">IsPopup(<var>windowFeature</var>)<a href="#is-popup" class="self-link"></a></h4>
+  <ol>
+    <li>If <var>windowFeature</var>["<code>type</code>"] is "<code>popup</code>", then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>["<code>type</code>"] is "<code>window</code>", then:
+      <ol>
+        <li>Return false.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>["<code>location</code>"] and <var>windowFeature</var>["<code>toolbar</code>"] are both false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>["<code>menubar</code>"] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>["<code>resizable</code>"] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>["<code>scrollbars</code>"] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>If <var>windowFeature</var>["<code>status</code>"] is false, then:
+      <ol>
+        <li>Return true.</li>
+      </ol>
+    </li>
+    <li>Return false.</li>
+  </ol>
 
   <h3 id=browser-interface-elements>Replace <a href="https://html.spec.whatwg.org/multipage/window-object.html#browser-interface-elements">Browser interface elements<a href=#browser-interface-elements class=self-link></a></h3>
 
