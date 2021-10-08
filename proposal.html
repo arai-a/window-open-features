@@ -105,7 +105,7 @@
     To <dfn id="window-feature-is-set">check if window feature is set</dfn>, given <var>tokenizedFeatures</var>, <var>featureName</var>, and <var>defaultValue</var>:
   </p>
   <ol>
-    <li><p>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key <var>featureName</var>, then:</p>
+    <li><p>If <var>tokenizedFeatures</var>[<var>featureName</var>] <a href="https://infra.spec.whatwg.org/#map-exists">exists</a>, then:</p>
       <ol>
         <li><p>Return the result of <a href="https://html.spec.whatwg.org/multipage/window-object.html#concept-window-open-features-parse-boolean">parsing <var>tokenizedFeatures</var>[<var>featureName</var>] as a boolean feature</a>.</p></li>
       </ol>
@@ -118,7 +118,7 @@
   </p>
   <ol>
     <li><p>If <var>tokenizedFeatures</var> is <a href="https://infra.spec.whatwg.org/#map-is-empty">empty</a>, then return false.</p></li>
-    <li><p>If <var>tokenizedFeatures</var> <a href="https://infra.spec.whatwg.org/#map-exists">contains</a> an entry with the key "<code>type</code>", then:</p>
+    <li><p>If <var>tokenizedFeatures</var>["<code>type</code>"] <a href="https://infra.spec.whatwg.org/#map-exists">exists</a>, then:</p>
       <ol>
         <li><p>Let <var>type</var> be <var>tokenizedFeatures</var>["<code>type</code>"].</p></li>
         <li><p>If <var>type</var> is "<code>popup</code>", then return true.</p></li>
