@@ -150,19 +150,20 @@
   <tr>
     <td><code>0</code></td>
     <td>
-      No restrictions.
+      Always use `browser.link.open_newwindow` value.
     </td>
   </tr>
   <tr>
     <td><code>1</code></td>
     <td>
-      Always open the link in a new tab.
+      Always open the link in a new window.
     </td>
   </tr>
   <tr>
     <td><code>2</code></td>
     <td>
-      <em>(default)</em> Open the link in a new tab if no feature is specified.
+      <em>(default)</em> If some feature is specified, open the link in a new window.
+      Otherwise use `browser.link.open_newwindow` value.
     </td>
   </tr>
 </table>
