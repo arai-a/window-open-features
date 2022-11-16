@@ -4,6 +4,7 @@
 <body>
 <input onclick="openWindow()" type="button" value="open window">
 <span id="features"></span><br>
+<label><input type="checkbox" id="other_domain">Open different domain</label>
 <script>
 
 function onoff(s) {
@@ -163,7 +164,8 @@ function update() {
 }
 
 function openWindow() {
-  window.open(window.location.href, "", getFeatures());
+  const url = document.getElementById("other_domain").checked ? "https://whatwg.org/" : window.location.href;
+  window.open(url, "", getFeatures());
 }
 </script>
 
